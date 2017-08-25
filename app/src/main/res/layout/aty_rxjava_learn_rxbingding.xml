@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/rl_header"
+        layout="@layout/include_header" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_header">
+
+        <RelativeLayout
+            android:id="@+id/rl_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="邮箱："
+                android:textColor="@color/c_000000" />
+
+            <EditText
+                android:id="@+id/e_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_email"
+                android:hint="输入"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_14" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_name"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/tv_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="密码："
+                android:textColor="@color/c_000000" />
+
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_pwd"
+                android:hint="输入"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_pwd"
+            android:layout_centerHorizontal="true"
+            android:text="登录"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d10"
+        android:layout_below="@+id/rl_from"
+        android:background="@color/c_a9a9a9" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/v_line"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <EditText
+                android:id="@+id/et_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="输入"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_14" />
+
+            <ListView
+                android:id="@+id/ls_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/et_list_view"
+                android:divider="@color/c_a9a9a9"
+                android:dividerHeight="@dimen/d1" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <EditText
+                android:id="@+id/et_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="输入"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_14" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/et_recycler_view" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

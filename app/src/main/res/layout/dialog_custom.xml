@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_dlg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_dlg"
+        android:layout_width="@dimen/d300"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:clickable="false"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/rl_dlg_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/d89">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_dialog_single_message">
+
+                <TextView
+                    android:id="@+id/tv_dlg_title"
+                    style="@style/DialogWindowTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/tips" />
+            </RelativeLayout>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_dlg_icon"
+                android:layout_width="@dimen/d80"
+                android:layout_height="@dimen/d89"
+                android:layout_alignParentEnd="true"
+                app:placeholderImage="@drawable/icon_btn_back_black" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/dlg_custom_center_content_bg"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/d10">
+
+            <TextView
+                android:id="@+id/tv_dlg_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/d15"
+                android:paddingRight="@dimen/d15"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_14"
+                tools:text="mesge" />
+
+            <TextView
+                android:id="@+id/tv_dlg_message2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="@dimen/d20"
+                android:paddingRight="@dimen/d20"
+                android:paddingTop="@dimen/d5"
+                android:textColor="@color/c_000000"
+                android:textSize="@dimen/text_size_15"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="周一 8:00；周三 14:00；\n周四 15:00；周六 22:00。" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_dlg_left_bt_style"
+                android:gravity="center"
+                android:paddingTop="@dimen/d10"
+                android:text="@string/cancel"
+                android:textColor="@color/c_E4AF0A"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/bt_right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_dlg_right_bt_style"
+                android:gravity="center"
+                android:paddingTop="@dimen/d10"
+                android:text="@string/confirm"
+                android:textColor="@color/c_E4AF0A"
+                android:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

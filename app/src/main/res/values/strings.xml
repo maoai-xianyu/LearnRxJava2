@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">RxJava2</string>
+    <string name="no_connect_net">当前网路有点差呀~~</string>
+    <string name="tip_token_error">您的账号在其他设备上登录或者以其他身份登录了本APP。\n如为本人操作，请无视。</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="tips">提示</string>
+    <string name="header">学习</string>
+    <string name="header_rxjava">学习RxJava</string>
+    <string name="header_rxjava_binding">学习RxJavaBinding</string>
+    <string name="loading">加载中...</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c_FFFFFF"
+    android:orientation="vertical">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sv_movie_cover"
+        android:layout_width="@dimen/d150"
+        android:layout_height="@dimen/d222"
+        android:layout_margin="@dimen/d10"
+        app:placeholderImage="@drawable/image_dafault"
+        app:viewAspectRatio="0.67" />
+
+    <TextView
+        android:id="@+id/tv_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/d20"
+        android:layout_marginTop="@dimen/d10"
+        android:layout_toEndOf="@id/sv_movie_cover"
+        android:textColor="@color/c_000000"
+        tools:text="肖申克的救赎" />
+
+    <TextView
+        android:id="@+id/tv_movie_title_eng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_movie_title"
+        android:layout_marginStart="@dimen/d20"
+        android:layout_marginTop="@dimen/d10"
+        android:layout_toEndOf="@id/sv_movie_cover"
+        android:textColor="@color/c_000000"
+        tools:text="The Shawshank Redemption" />
+
+</RelativeLayout>

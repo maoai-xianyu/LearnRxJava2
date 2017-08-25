@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_FFFFFF"
+    tools:context="com.mao.cn.learnRxJava2.ui.activity.MainActivity">
+
+    <include
+        android:id="@+id/rl_header"
+        layout="@layout/include_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_header">
+
+        <RelativeLayout
+            android:id="@+id/rl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/d10">
+
+            <Button
+                android:id="@+id/btn_okhttp"
+                style="@style/home_main_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="okhttp网路请求" />
+
+            <Button
+                android:id="@+id/btn_rxjava"
+                style="@style/home_main_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_okhttp"
+                android:text="rxjava网络请求" />
+
+
+            <Button
+                android:id="@+id/btn_retrofit"
+                style="@style/home_main_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_rxjava"
+                android:text="retrofit网络请求" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

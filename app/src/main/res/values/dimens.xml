@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--&lt;!&ndash; 0dp&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="zero">0dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash; Text Size&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="total_step">70sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="huge">64sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="largest">40sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="larger">35sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="large">30sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="mediumer">25sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="medium">20sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="small">18sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="smaller">15sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="smallest">10sp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="text_size_10">10sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_12">12sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_14">14sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_15">15sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_17">17sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_19">19sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_21">21sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_23">23sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_30">30sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_36">36sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_42">41sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_51">51sp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="text_size_120">120sp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_my_tabhost_height">57dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="stroke_width">4dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_ll_marginTop">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_width">39dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_height">29dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_padding">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_marginTop">6dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_new_message_height">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_module_item_iv_module_item_new_message_width">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_ll_margin_left">36dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_ll_margin_right">36dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_ll_ll_margin_top">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_ll_3_margin_top">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_img_margin_right">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_menu_ll_btn_margin_top">3dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_login_text_register_marginTop">22dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_text_register_marginLeft">23dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_logo_paddingBottom">53dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_iv_login_logo_width">120dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_iv_login_logo_height">120dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ev_login_no_marginLeft">4dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_iv_login_more_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_iv_login_more_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_more_height">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_more_marginLeft">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_more_marginRight">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_more_paddingTop">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_login_more_paddingBottom">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ev_login_pw_marginLeft">4dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_btn_login_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_list_login_history">73dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_relative_layout_marginLeft">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_relative_layout_marginRight">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_ll_npb_login_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_npb_login_height">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_tv_login_status_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_loginmore_text_style_marginLeft">70dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_loginmore_text_style_marginTop">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_linear_edit_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_spinner_image_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_spinner_image_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_spinner_image_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_spinner_image_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_qqlogin_text_marginRight">23dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_login_qqlogin_text_marginBottom">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;act_register&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="register_linear_height">49dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="register_edit_icom_right_marigin">12dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_iv_close_top_margin">17dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_iv_close_left_margin">17dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_ll_marginTop">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_ll_marginBottom">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_iv_login_logo_width">120dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_iv_login_logo_height">120dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_ev_register_username_marginLeft">4dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_ll_confirm_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_register_ll_padding">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="popwindow_iv_pop_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="popwindow_iv_pop_marginBottom">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="popwindow_ll_pop_height">193dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_tip_tv_test_tip_total_margin">30dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_rl_multiple_choice_question_margin">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_rl_answer_margin">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_rl_multiple_choice_answer_a_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_iv_multiple_choice_answer_a_width">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_iv_multiple_choice_answer_a_height">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_ib_next_page_width">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_ib_next_page_height">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_multiple_ib_next_page_margin">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_index_iv_setting_width">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_iv_setting_height">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_iv_setting_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_learn_route_marginTop">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_has_finish_marginLeft">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_has_finish_marginRight">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_has_finish_marginTop">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_vp_index_marginLeft">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_vp_index_marginRight">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_vp_index_height">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_index_recommend_tip_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_index_recommend_back_marginTop">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_index_recommend_back_marginBottom">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_tv_index_recommend_back_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_pbd_index_height">6dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_pbd_index_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_pbd_index_marginLeft">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_index_pbd_index_marginRight">80dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="line_height">0.3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="person_avatar_height">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="person_item_height">64dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="avatar_width">64dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="avatar_height">64dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_image_width">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_image_height">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_image_marginLeft">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_text_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_icon_marginRight">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_line_marginLeft">72dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="person_item_marginTop">24dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="inc_header_tvTitleBtnLeft_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_tvTitleBtnLeft_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_tvTitleBtnRight_width">60dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_download_rl_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_rl_marginRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_rl_paddingTop">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_npb_download_paddingTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_iv_download_image_margin">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_iv_download_image_width">400dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_iv_download_image_height">300dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_download_tv_download_text_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_heade_left_marginleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="ib_header_back_paddingright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="ib_header_back_paddingleft">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_change_server_textview_height">60dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_ib_header_back_paddingright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_ib_header_back_paddingleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_tv_heade_left_marginleft">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_viewpager_question_height">150dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_viewpager_question_marginBottom">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_rl_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_ll_image_group_height">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_btn_cloze_submit_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_btn_cloze_submit_width">153dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_btn_cloze_submit_height">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_ib_next_page_width">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_ib_next_page_height">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_ib_next_page_margin">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_tv_question_id_marginTop">9dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_tv_question_id_marginLeft">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_rl_cloze_answer_margin">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_rl_cloze_answer_marginTop">34dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_content_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_content_marginRight">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_rl_cloze_answer_line1_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_rl_cloze_answer_line2_marginTop">25dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_rl_cloze_answer_paddingLeft">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_iv_cloze_answer_a_width">25dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_iv_cloze_answer_a_height">25dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_id_cloze_text_height">31dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_cloze_question_id_cloze_text_paddingLeft">35dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_viewpager_question_height">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_viewpager_question_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_rl_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_ll_image_group_marginBottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_btn_reading_submit_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_ib_next_page_width">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_ib_next_page_height">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_ib_next_page_margin">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_question_rl_reading_question_margin">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_question_rl_reading_answer_margin">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_question_rl_reading_answer_a_margin">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_question_iv_reading_answer_a_width">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_test_reading_question_iv_reading_answer_a_height">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_tv_title_marginTop">58dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_tv_info_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_tv_logo_marginTop">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_tv_logo_height">93dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_tv_logo_width">93dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_introduce_tv_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_person_info_about_us_introduce_tv_lineSpacing">5dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<dimen name="dialog_rl_padding">32dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="dialog_rl_contentDialog_padding">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="dialog_title_marginBottom">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="dialog_message_scrollView_paddingBottom">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="dialog_message_scrollView_scrollbarSize">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="dialog_ll_marginTop">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;&ndash;&gt;-->
+    <!--<dimen name="dialog_apply_teacher_ll_width">300dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_tv_realname_marginLeft">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_tv_realname_marginTop">8dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_ray_marginTop">8dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_name_marginTop">8dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_name_marginLeft">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_name_marginRight">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_name_padding">5dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_tv_addtion_info_marginTop">16dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_tv_addtion_info_marginLeft">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_info_height">60dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_info_marginTop">8dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_info_marginLeft">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_info_marginRight">20dp</dimen>-->
+    <!--<dimen name="dialog_apply_teacher_et_info_padding">5dp</dimen>-->
+
+    <!--<dimen name="dialog_custom_ll_width">300dp</dimen>-->
+    <!--<dimen name="dialog_custom_ll_marginLeft">30dp</dimen>-->
+    <!--<dimen name="dialog_custom_ll_marginRight">30dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_gold_ll_marginRight">20dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_gold_ll_marginLeft">20dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_gold_ll_width">300dp</dimen>-->
+    <!--<dimen name="dialog_custom_paddingLeft">15dp</dimen>-->
+    <!--<dimen name="dialog_custom_paddingRight">15dp</dimen>-->
+    <!--<dimen name="dialog_custom_rl_dlg_header_height">48dp</dimen>-->
+    <!--<dimen name="dialog_custom_rl_dlg_header_marginLeft">16dp</dimen>-->
+    <!--<dimen name="dialog_custom_rl_dlg_header_marginRight">16dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_icon_width">32dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_icon_marginLeft">10dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_icon_marginTop">8dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_icon_marginBottom">8dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_title_paddingTop">18dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_dlg_title_marginLeft">14dp</dimen>-->
+    <!--<dimen name="dialog_custom_v_dlg_divider">1dp</dimen>-->
+    <!--<dimen name="dialog_custom_tv_dlg_message_paddingTop">29dp</dimen>-->
+    <!--<dimen name="dialog_custom_tv_dlg_message_paddingBottom">28dp</dimen>-->
+    <!--<dimen name="dialog_custom_tv_dlg_message_paddingLeft">37dp</dimen>-->
+    <!--<dimen name="dialog_custom_tv_dlg_message_paddingRight">37dp</dimen>-->
+    <!--<dimen name="dialog_custom_tv_dlg_message_text_height">95dp</dimen>-->
+    <!--<dimen name="dialog_custom_bt_left_marginLeft">10dp</dimen>-->
+    <!--<dimen name="dialog_custom_bt_left_marginRight">5dp</dimen>-->
+    <!--<dimen name="dialog_custom_bt_right_marginLeft">5dp</dimen>-->
+    <!--<dimen name="dialog_custom_bt_right_marginRight">10dp</dimen>-->
+
+    <!--<dimen name="dialog_custom_iv_icon_width">50dp</dimen>-->
+    <!--<dimen name="dialog_custom_iv_icon_height">50dp</dimen>-->
+
+    <!--<dimen name="dialog_loading_ll_width">250dp</dimen>-->
+    <!--<dimen name="dialog_loading_ll_height">160dp</dimen>-->
+    <!--<dimen name="dialog_loading_ll_minwidth">180dp</dimen>-->
+    <!--<dimen name="dialog_loading_ll_minheight">100dp</dimen>-->
+    <!--<dimen name="dialog_loading_ll_padding">10dp</dimen>-->
+    <!--<dimen name="dialog_loading_tv_margintop">10dp</dimen>-->
+    <!--<dimen name="dialog_loading_iv_width">50dp</dimen>-->
+    <!--<dimen name="dialog_loading_iv_height">50dp</dimen>-->
+
+    <!--<dimen name="dialog_custom_buy_iv_width">86dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_iv_height">118dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_iv_margintop">20dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_iv_marginright">20dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_iv_marginbottom">16dp</dimen>-->
+    <!--<dimen name="dialog_custom_buy_text_gold_marginTop">10dp</dimen>-->
+
+    <!--<dimen name="dialog_singlebutton_ll_width">300dp</dimen>-->
+    <!--<dimen name="dialog_singlebutton_ll_dlg_margin">50dp</dimen>-->
+    <!--<dimen name="dialog_singlebutton_tv_title_margintop">15dp</dimen>-->
+    <!--<dimen name="dialog_singlebutton_tv_message_padding">10dp</dimen>-->
+    <!--<dimen name="dialog_singlebutton_tv_message_maxheight">180dp</dimen>-->
+    <!--<dimen name="dialog_singlebutton_btn_paddingtop">8dp</dimen>-->
+    <!--&lt;!&ndash;&lt;!&ndash;公共导航栏&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_tvTitleName_paddingLeft">96dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_tvTitleName_paddingRight">96dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_btn_share_marginRight">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="base_header_tvTitleBtnLeft_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="base_header_tvTitleBtnLeft_width">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="base_header_tvTitleBtnRight_width">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inc_header_iv_line_height">1dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;courseMain&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_lesson_rl_marginLeft">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_lesson_rl_recommend_lesson_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_lesson_rl_recommend_lesson_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_lesson_tv_recommend_item_title_marginTop">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_lesson_tv_recommend_item_type_marginTop">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_tv_acm_title_marginBottom">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_tv_acm_title_marginLeft">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_iv_acm_learning_width">103dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_iv_acm_learning_height">103dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_ll_acm_learning_marginLeft">32dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_after_ll_acm_learning_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_after_ll_acm_learning_marginRight">25dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_iv_favorite_marginTop">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_iv_favorite_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_main_tv_acm_learning_marginTop">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="fl_index_recommend_lesson_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="fl_index_recommend_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_index_recommend_marginleft">12dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_index_recommend_margintop">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="index_recommend_lesson_marginleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="index_recommend_lesson_margintop">30dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;aty_course_main&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_ll_padding">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_view">0.3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_view_marginLeft">70dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_ray_person_avatar_height">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_ray_person_avatar_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_iv_person_avatar_marginLeft">25dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_iv_person_avatar_width">68dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_person_name_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_icon_list_detail_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_ray_person_achievement_height">60dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_ray_person_achievement_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_iv_person_achievement_width">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_iv_person_achievement_height">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_iv_achievement_marginLeft">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_achievement_marginLeft">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_achievement_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_version_marginTop">11dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_version_marginBottom">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_person_tv_version_marginLeft">10dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<dimen name="aty_history_info_ll_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_history_info_ll_marginRight">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_history_info_lv_history_dividerHeight">1dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_history_ll_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_history_ll_marginRight">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_history_lv_history_dividerHeight">1dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_history_ll_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_ll_minHeight">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_iv_item_history_arrow_margin">18dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_iv_item_history_arrow_marginRight">16dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;课程推荐&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_ll_marginTop">133dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_textView_width">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_textView_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_textView_paddingLeft">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_circleView_width">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_circleView_height">66dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_ll_padding">40dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_lv_marginLeft">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_lv_marginRight">16dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_recommend_course_lv_history_dividerHeight">1dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;item_recommend_course_teacher&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_ray_teacher_height">70dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_iv_myteacher_avatar_default_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_iv_myteacher_avatar_default_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_iv_myteacher_avatar_default_marginLeft">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_iv_myteacher_avatar_text_size">13dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_tv_teacherid_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_tv_teacherid_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_teacher_iv_arrow_marginRight">15dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;item_recommnad_course&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_ll_minHeight">120dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_ll_difficulty_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_rb_item_history_info_difficulty_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_recommend_course_tv_item_history_info_type_marginLeft">10dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;&lt;!&ndash;learn&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_course_learning_main_ll_height">1dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_iv_fed_img_height">224dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_iv_fed_img_marginTop">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_padding">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_marginRight">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_marginTop">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_width">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_dictation_et_fed_input_purple_line_width">200dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_img_height">224dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_img_marginTop">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_tv_question_padding">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_tv_answer1_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_tv_answer1_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_tv_answer1_padding">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_fillblanks_tv_answer2_marginRight">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_ray_title_height">150dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_iv_pic1_height">160dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_iv_pic1_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_iv_pic1_tag_marginRight">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_iv_pic1_tag_marginBottom">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_line1">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_iv_pic2_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_sound_rl_marginTop">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_ray_fesibw_title_height">150dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_tv_fesibw_title_padding">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_iv_fesibw_pic1_height">160dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_iv_fesibw_pic1_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_iv_fesibw_pic1_tag_marginRight">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_iv_fesibw_pic1_tag_marginBottom">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_line1">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_iv_fesibw_pic2_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_image_by_word_rl_marginTop">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_rl_padding">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_view">0.3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_ray_my_apply_height">45dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_ray_my_apply_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_tv_person_name_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_icon_list_detail_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_lv_teacher_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_my_teacher_lv_teacher_marginBottom">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_myteacher_ray_teacher_height">70dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_iv_myteacher_avatar_default_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_iv_myteacher_avatar_default_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_iv_myteacher_avatar_default_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_tv_teacherid_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_tv_teacherid_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_myteacher_tv_status_marginRight">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_rl_padding">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_view">1dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_tv_aft_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_tv_aft_marginBottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_ll_marginLeft">32dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_ll_marginRight">26dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_et_input_teacher_marginTop">7dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_et_input_teacher_marginBottom">7dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_et_input_teacher_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_et_input_teacher_marginRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_et_input_teacher_padding">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_ll_teacher_result_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_ll_teacher_result_marginRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_tv_search_result">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_rl_ray_teacher_marginTop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_iv_teacher_avatar_default_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_iv_teacher_avatar_default_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_iv_teacher_avatar_default_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_tv_user_name_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_search_image_marginTop">6dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_find_teacher_search_image_marginBottom">7dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_rl_paddingTop">35dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_iv_result_background_height">350dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_tv_current_score_paddingTop">130dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_relative_layout_marginTop">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_rg_result_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_lv_score_list_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_lv_score_list_marginBottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_lv_statistic_list_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_lv_statistic_list_marginBottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_chart_height">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_ll_padding_left">75dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_ll_padding_right">75dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_ll_height">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_count_textView_width">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_username_textView_marginLeft">11dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_score_textView_marginRight">35dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_username_textView_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_exercise_result_line_View_marginLeft">32dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="size_avatar">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="margin_chat_activity">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="image_thumbnail_size">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="image_thumbnail_spacing">1dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_iv_index_img_height">224dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_iv_index_img_marginTop">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_rl_marginTop">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_rl_record_height">80dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_iv_stu_text_image_padding">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_ib_record_width">60dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_ib_record_height">60dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_ib_record_marginRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_ib_record_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_iv_speech_result_width">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_iv_speech_result_height">100dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_keyword_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_keyword_marginBottom">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_index_keyword_paddingleft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_index_keyword_paddingright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_index_sentence_paddingleft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_index_sentence_paddingright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_line_paddingleft">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_word_tv_line_paddingright">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_iv_fla_bg_height">224dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_iv_fla_bg_margin">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_mmc_fla_marginTop">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_mmc_fla_marginLeft">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_mmc_fla_marginRight">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_iv_fla_endimage_padding">40dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_tv_fla_content_padding">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_lv_flv_list_paddingTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_lv_flv_list_paddingLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_lv_flv_list_paddingRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_audio_lv_flv_list_marginBottom">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_vv_flv_view_height">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_vv_flv_view_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_media_controller_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_media_controller_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_lv_flv_list_paddingTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_lv_flv_list_paddingLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_lv_flv_list_paddingRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_lv_flv_list_marginBottom">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_scrollview_content_padding">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_tv_send_padding">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_rl_bottom_height">60dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_tv_passage_marginLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_learn_video_ib_next_marginRight">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_ll_height">45dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_button_play_width">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_button_play_height">26dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_button_play_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_button_play_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="inflate_media_controller_button_full">30dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="textview_padding">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="textview_marginTop">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_history_info_ll_minHeight">90dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_info_line_height">1dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_info_ll_difficulty_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_info_rb_item_history_info_difficulty_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_history_info_tv_item_history_info_type_marginLeft">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_index_history_tv_dot_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_history_tv_history_detail_name_marginLeft">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_rl_height">200dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_ll_marginTop">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_ll_marginRight">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_tv_recomment_history_date_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_tv_recomment_history_date_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_recommend_history_lv_recommend_history_marginTop">20dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="item_index_tv_matgin_bottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_ll_marginright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_ll_marginbottom">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_tv_name_marginleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_tv_name_margintop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_tv_summary_marginleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_index_tv_summary_margintop">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_draw_pen_padding">2dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="selection_course_listview_s_marginleft">60px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_gridview_d_margintop">34px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_gridview_d_horizontalspacing">70px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_gridview_s_verticalspacing">76px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_gridview_s_horizontalspacing">76px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_textview_margintop">62px</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_imageview_width">160dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash; item_bookshelf_cell &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="fl_word_margin_bottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="lv_learning_video_margintop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="lv_learning_video_marginleft">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="lv_learning_video_marginright">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="ll_popwindow_expandation_marginbottom">60dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="tv_item_grid_name_padingleft">6dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_item_grid_name_padingbt">2dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="grid_cell_textview_marginbottom">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="selection_course_grid_cell_textview_marginbottom">5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_grid_cell_marginleft">8dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="selection_course_grid_cell_marginright">12dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<dimen name="book_catalog_cell_textview_margin">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="book_catalog_cell_layout_height">50dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_mmc_fla_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_mmc_fla_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_mmc_fla_marginRight">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_lv_fla_list_paddingTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_lv_fla_list_paddingLeft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_lv_fla_list_paddingRight">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_lv_fla_list_marginBottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_scrollview_picture_padding">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_scrollview_content_padding">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_tv_send_padding">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_rl_bottom_height">50dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_tv_passage_marginLeft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_listen_select_picture_ib_next_marginRight">10dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="ib_preference_return_padding">15dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="rl_setting_view_margin">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_setting_view_margintop">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="iv_setting_view_margintop">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="btn_setting_view_margintop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="lv_setting_view_margintop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="lv_setting_view_dividerheight">0.001dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_choice_item_cell_margintop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_choice_item_cell_marginbottom">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_choice_item_cell_marginleft">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="iv_choice_item_cell_margin">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="tv_setting_view_totoast_margintop">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="iv_choice_item_cell_width">30dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="iv_clear_password_paddingbottom">35dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="iv_clear_password_paddingtop">11dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<dimen name="snackbar_rl_minHeight">56dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="snackbar_snackbar_marginTop">18dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="snackbar_snackbar_marginBottom">18dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="snackbar_snackbar_marginLeft">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="snackbar_snackbar_marginRight">24dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="snackbar_buttonflat_marginLeft">24dp</dimen>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_ray_padding">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_tv_paddingright">20dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_ray_marginTop">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_pbd_height">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_ll_padding">1dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_ll_height">15dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_ll_marginleft">10dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="aty_achievement_word_count_tv_margintop">5dp</dimen>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_size">168.1dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_marginLeft">8.7dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_marginRight">8.7dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_marginTop">5.5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_tag_size">22dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_tag_marginRight">5.3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_tag_marginBottom">3dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="frg_exercise_select_picture_line_width">6.4dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash; &ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_marginTop">32dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_avatar_size">45dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_avatar_margin_right">9dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_avatar_margin_left">9dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_content_margin_right">7.5dp</dimen>&ndash;&gt;-->
+    <!--&lt;!&ndash;<dimen name="item_chat_content_margin_left">7.5dp</dimen>&ndash;&gt;-->
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+</resources>

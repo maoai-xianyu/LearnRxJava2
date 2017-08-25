@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white30">#4CFFFFFF</color>
+    <color name="white60">#99FFFFFF</color>
+    <color name="white80">#ccFFFFFF</color>
+
+    <color name="black50">#FF323232</color>
+    <color name="black80">#CC000000</color>
+    <color name="black70">#B2000000</color>
+    <color name="black90">#E5000000</color>
+    <color name="transparent85">#21000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="c_72000000">#72000000</color>
+    <color name="c_33000000">#33000000</color>
+    <color name="c_000000">#000000</color>
+
+    <color name="c_FFFFFF">#FFFFFF</color>
+    <color name="c_030303">#030303</color>
+    <color name="c_a9a9a9">#a9a9a9</color>
+    <color name="c_f0c22d">#f0c22d</color>
+    <color name="c_f3f3f3">#f3f3f3</color>
+    <color name="c_797979">#797979</color>
+    <color name="c_7d7d7d">#7d7d7d</color>
+    <color name="c_ffc400">#ffc400</color>
+    <color name="c_e8e8e8">#e8e8e8</color>
+    <color name="c_404040">#404040</color>
+    <color name="c_595959">#595959</color>
+    <color name="c_a5e7ff">#a5e7ff</color>
+    <color name="c_8e8e8e">#8e8e8e</color>
+    <color name="c_9b6249">#9b6249</color>
+    <color name="c_9999cb">#9999cb</color>
+    <color name="c_686868">#686868</color>
+    <color name="c_cdeea7">#cdeea7</color>
+    <color name="c_cee9f4">#cee9f4</color>
+    <color name="c_454859">#454859</color>
+    <color name="c_eeeeee">#eeeeee</color>black50
+    <color name="c_696969">#696969</color>
+    <color name="c_f4c41f">#f4c41f</color>
+    <color name="c_e6e6e6">#e6e6e6</color>
+    <color name="c_535353">#535353</color>
+    <color name="c_353742">#353742</color>
+    <color name="c_ff4532">#ff4532</color>
+    <color name="c_F29BC9">#F29BC9</color>
+    <color name="c_ff6800">#ff6800</color>
+    <color name="c_ff4D30">#FF4D30</color>
+    <color name="c_4F99F0">#4F99F0</color>
+    <color name="c_69C614">#69C614</color>
+    <color name="c_f7f7f7">#f7f7f7</color>
+    <color name="c_fafafa">#fafafa</color>
+    <color name="c_f8f8f8">#f8f8f8</color>
+    <color name="c_979797">#979797</color>
+    <color name="c_E4AF0A">#E4AF0A</color>
+
+
+    <color name="defBlack">#FF000000</color>
+    <color name="defDividerColor">#11000000</color>
+    <color name="defDialogColor">#FFE74C3C</color>
+    <color name="dialog_bg">#FFFFFFFF</color>
+
+</resources>

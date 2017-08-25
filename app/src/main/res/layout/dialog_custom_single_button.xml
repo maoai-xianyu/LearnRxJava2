@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_dlg"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/d188"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_dlg"
+        android:layout_width="@dimen/d300"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent"
+        android:clickable="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dlg_custom_top_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_dlg_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/d8"
+                android:singleLine="true"
+                android:textColor="#323232"
+                android:textSize="@dimen/text_size_17" />
+
+            <TextView
+                android:id="@+id/tv_dlg_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/d20"
+                android:layout_marginLeft="@dimen/d29"
+                android:layout_marginRight="@dimen/d29"
+                android:layout_marginTop="@dimen/d31"
+                android:gravity="center"
+                android:textColor="#323232"
+                android:textSize="@dimen/text_size_14" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_title"
+            android:background="@drawable/selector_dlg_single_bt_style"
+            android:gravity="center"
+            android:paddingTop="@dimen/d10"
+            android:text="@string/confirm"
+            android:textColor="@color/c_E4AF0A"
+            android:textSize="@dimen/text_size_18"
+            android:visibility="visible" />
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="@dimen/d80"
+            android:layout_height="@dimen/d89"
+            android:layout_alignParentRight="true"
+            app:placeholderImage="@drawable/icon_btn_back_black" />
+    </RelativeLayout>
+</LinearLayout>
+
