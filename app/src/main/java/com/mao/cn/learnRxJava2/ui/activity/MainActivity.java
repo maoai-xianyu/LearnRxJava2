@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mao.cn.learnRxJava2.R;
 import com.mao.cn.learnRxJava2.component.AppComponent;
 import com.mao.cn.learnRxJava2.component.DaggerMainComponent;
@@ -26,7 +26,7 @@ import com.mao.cn.learnRxJava2.ui.features.IMain;
 import com.mao.cn.learnRxJava2.ui.presenter.MainPresenter;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 import com.mao.cn.learnRxJava2.utils.tools.StringU;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 

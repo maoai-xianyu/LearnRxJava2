@@ -21,10 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.rxbinding.support.v7.widget.RxRecyclerView;
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxAdapterView;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.mao.cn.learnRxJava2.R;
 import com.mao.cn.learnRxJava2.component.AppComponent;
 import com.mao.cn.learnRxJava2.component.DaggerRxjavaLearnRxBingdingComponent;
@@ -45,12 +45,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * DESC   :
@@ -136,9 +136,9 @@ public class RxjavaLearnRxBingdingActivity extends BaseActivity implements IRxja
                 })
 
                 //
-                .switchMap(new Func1<String, Observable<String>>() {
+                .switchMap(new Function<String, ObservableSource<String>>() {
                     @Override
-                    public Observable<String> call(String s) {
+                    public ObservableSource<String> apply(@NonNull String s) throws Exception {
                         return Observable.just(s);
                     }
                 })
@@ -218,23 +218,13 @@ public class RxjavaLearnRxBingdingActivity extends BaseActivity implements IRxja
         Observable<String> observablePassword = RxTextView.textChanges(etPwd).map(CharSequence::toString);
 
 
-        Observable.combineLatest(mapEtMail, observablePassword, new Func2<String, String, Boolean>() {
-            @Override
-            public Boolean call(String email, String password) {
-                return isEmailValid(email) && isPasswordValid(password);
-            }
-        }).subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean aBoolean) {
-                if (aBoolean){
-                    btnConfirm.setVisibility(View.VISIBLE);
-                }else {
-                    btnConfirm.setVisibility(View.GONE);
-                }
+        Observable.combineLatest(mapEtMail, observablePassword, (email, password) -> isEmailValid(email) && isPasswordValid(password)).subscribe(aBoolean -> {
+            if (aBoolean) {
+                btnConfirm.setVisibility(View.VISIBLE);
+            } else {
+                btnConfirm.setVisibility(View.GONE);
             }
         });
-
-
     }
 
 

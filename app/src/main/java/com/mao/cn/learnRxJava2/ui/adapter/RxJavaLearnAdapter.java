@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mao.cn.learnRxJava2.R;
 import com.mao.cn.learnRxJava2.contants.ValueMaps;
 import com.mao.cn.learnRxJava2.utils.tools.ListU;

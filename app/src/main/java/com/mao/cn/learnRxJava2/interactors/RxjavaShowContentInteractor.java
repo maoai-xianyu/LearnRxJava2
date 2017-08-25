@@ -14,7 +14,8 @@ import com.mao.cn.learnRxJava2.http.RestApiAdapter;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * DESC   :

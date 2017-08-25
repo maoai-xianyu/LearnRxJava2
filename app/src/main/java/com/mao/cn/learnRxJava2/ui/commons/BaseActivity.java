@@ -21,10 +21,10 @@ import com.mao.cn.learnRxJava2.wedget.dialog.DefineTwoBottomDialog;
 import com.mao.cn.learnRxJava2.wedget.dialog.LoadingDialog;
 import com.mao.cn.learnRxJava2.wedget.dialog.SingleDialog;
 
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by zhangkun on 2017/6/9.
@@ -226,7 +226,7 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
         super.onDestroy();
     }
 
-    protected <T> Observable.Transformer<T, T> timer() {
+    protected <T> ObservableTransformer<T, T> timer() {
         return observable -> observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

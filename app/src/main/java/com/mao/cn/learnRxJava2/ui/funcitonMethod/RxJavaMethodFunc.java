@@ -11,19 +11,25 @@ import com.mao.cn.learnRxJava2.utils.tools.LogU;
 import com.mao.cn.learnRxJava2.utils.tools.ResourceU;
 import com.mao.cn.learnRxJava2.utils.tools.StringU;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.observables.GroupedObservable;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.observables.GroupedObservable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * author:  zhangkun .
@@ -36,7 +42,7 @@ public class RxJavaMethodFunc {
     //-----------------------------------------------------------------------------线程控制：Scheduler
 
     // 总是启用新线程，并在新线程执行操作
-    public static <T> Observable.Transformer<T, T> newThreadSchedulers() {
+    public static <T> ObservableTransformer<T, T> newThreadSchedulers() {
         return observable -> observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -45,7 +51,7 @@ public class RxJavaMethodFunc {
     // 处理I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。
     // 行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，
     // 因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。
-    public static <T> Observable.Transformer<T, T> applyIoSchedulers() {
+    public static <T> ObservableTransformer<T, T> applyIoSchedulers() {
         return tObservable -> tObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -53,7 +59,7 @@ public class RxJavaMethodFunc {
     // 计算所使用的 Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。
     // 这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。
     // 不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU。
-    public static <T> Observable.Transformer<T, T> applyIoSchedulersComputation() {
+    public static <T> ObservableTransformer<T, T> applyIoSchedulersComputation() {
         return tObservable -> tObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -85,9 +91,7 @@ public class RxJavaMethodFunc {
     public static void changeThreadMain(SimpleDraweeView svImage) {
         Observable.just(1, 2, 3, 4)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(() -> {
-                    svImage.setVisibility(View.GONE);
-                })    // 主线程
+                .doOnSubscribe(disposable -> svImage.setVisibility(View.GONE))    // 主线程
                 .subscribeOn(AndroidSchedulers.mainThread())                // 指定主线程
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> LogU.i(" num " + s));
@@ -101,13 +105,21 @@ public class RxJavaMethodFunc {
         // --------线程的转换  create
         // 观察者
         Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onCompleted() {
-                LogU.i("onCompleted");
-            }
 
             @Override
             public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+                LogU.i("onCompleted");
+
+            }
+
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
 
             }
 
@@ -119,13 +131,19 @@ public class RxJavaMethodFunc {
 
 
         Subscriber<String> subscriber = new Subscriber<String>() {
+
             @Override
-            public void onCompleted() {
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
                 LogU.i("onCompleted");
             }
 
             @Override
-            public void onError(Throwable e) {
+            public void onSubscribe(Subscription subscription) {
 
             }
 
@@ -134,17 +152,6 @@ public class RxJavaMethodFunc {
                 LogU.i(s);
             }
         };
-
-        // 被观察者
-        Observable<String> objectObservable = Observable.unsafeCreate(subscriber1 -> {
-            subscriber1.onNext("create hello");
-            subscriber1.onNext("create world");
-            subscriber1.onCompleted();
-        });
-
-        objectObservable.subscribeOn(Schedulers.newThread()) // 指定 subscribe() 发生在 IO 线程
-                .observeOn(AndroidSchedulers.mainThread())  // 指定 Subscriber 的回调发生在主线程
-                .subscribe(subscriber);
 
         //------------------- just
         Observable.just("just hello", "just world")
@@ -156,13 +163,13 @@ public class RxJavaMethodFunc {
         List<String> strings = new ArrayList<>();
         strings.add("from hello");
         strings.add("from world");
-        Observable.from(strings)
+        Observable.fromIterable(strings)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(LogU::i);
 
         String[] stringsArray = {"from array hello", "from array world"};
-        Observable.from(stringsArray)
+        Observable.fromArray(stringsArray)
                 .compose(newThreadSchedulers())
                 .subscribe(LogU::i);
     }
@@ -182,7 +189,7 @@ public class RxJavaMethodFunc {
                 .subscribe(imageView::setImageBitmap);
 
 
-        Observable.from(new String[]{"This", "is", "RxJava"})
+        Observable.fromArray(new String[]{"This", "is", "RxJava"})
                 .map(s -> {
                     LogU.i("Transform Data toUpperCase: " + s);
                     return s.toUpperCase();
@@ -210,11 +217,11 @@ public class RxJavaMethodFunc {
      * 数据可能会交叉
      */
     public static void rxjava_flatmap() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .flatMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses());
                     }
                 }).compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.getCourse_name()));
@@ -224,11 +231,11 @@ public class RxJavaMethodFunc {
      * 网络请求中，如果数据有顺序问题，那么就不能使用flatMap
      */
     public static void rxjava_flatmapNew() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .flatMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses()).subscribeOn(Schedulers.io());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses()).subscribeOn(Schedulers.io());
                     }
                 }).compose(RxJavaMethodFunc.applyIoSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.getCourse_name()));
@@ -238,11 +245,11 @@ public class RxJavaMethodFunc {
      * concatMap()解决了flatMap()的交叉问题，它能够把发射的值连续在一起
      */
     public static void rxjava_concatMap() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .concatMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .concatMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses());
                     }
                 }).compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.getCourse_name()));
@@ -252,10 +259,10 @@ public class RxJavaMethodFunc {
      * flatMapIterable()它转化的多个Observable是使用Iterable作为源数据的。
      */
     public static void rxjava_FlatMapIterableMap() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .flatMapIterable(new Func1<Student, Iterable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .flatMapIterable(new Function<Student, Iterable<StudentCourse>>() {
                     @Override
-                    public Iterable<StudentCourse> call(Student student) {
+                    public Iterable<StudentCourse> apply(@NonNull Student student) throws Exception {
                         return student.getStudentCourses();
                     }
                 }).compose(RxJavaMethodFunc.newThreadSchedulers())
@@ -268,11 +275,11 @@ public class RxJavaMethodFunc {
      * 在同一线程产生数据，依次打出
      */
     public static void rxjava_switchMap() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .switchMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .switchMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses());
                     }
                 }).compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.getCourse_name()));
@@ -284,11 +291,11 @@ public class RxJavaMethodFunc {
      * 不同的线程，结果就是最后的数据
      */
     public static void rxjava_switchMapNew() {
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .switchMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .switchMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses()).subscribeOn(Schedulers.newThread());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses()).subscribeOn(Schedulers.newThread());
                     }
                 }).compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.getCourse_name()));
@@ -311,35 +318,12 @@ public class RxJavaMethodFunc {
     public static void rxjava_GroupBy() {
 
         // GroupedObservable是一个特殊的Observable，它基于一个分组的key，在这个例子中的key就是 StudentCourse  名字
-        Observable<GroupedObservable<String, StudentCourse>> groupedObservableObservable = Observable.from(InitDataMethodFunc.initStudentCourseData()).groupBy(StudentCourse::getCourse_name);
+        Observable<GroupedObservable<String, StudentCourse>> groupedObservableObservable = Observable.fromIterable(InitDataMethodFunc.initStudentCourseData()).groupBy(StudentCourse::getCourse_name);
 
         //concat操作符肯定也是有序的，而concat操作符是接收若干个Observables，发射数据是有序的，不会交叉。
         Observable.concat(groupedObservableObservable).subscribe(studentCourse -> LogU.i(" StudentCourse 名字 " + studentCourse.getCourse_name() + "  班级描述： " + studentCourse.getCourse_desc()));
 
     }
-
-    /**
-     * lift 这些变换虽然功能各有不同，但实质上都是针对事件序列的处理和再发送。
-     */
-    public static void rxjava_lift() {
-        Observable.just(1, 2, 3, 4).lift((Observable.Operator<String, Integer>) subscriber -> new Subscriber<Integer>() {
-            @Override
-            public void onCompleted() {
-                subscriber.onCompleted();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                subscriber.onError(e);
-            }
-
-            @Override
-            public void onNext(Integer integer) {
-                subscriber.onNext("num +" + integer);
-            }
-        }).compose(RxJavaMethodFunc.newThreadSchedulers()).subscribe(s -> LogU.i(" lift " + s));
-    }
-
 
     //--------------------------------------------------------------------------------------过滤
 
@@ -348,11 +332,12 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_filter() {
         // 过滤
-        Observable.from(InitDataMethodFunc.initStudentData())
-                .flatMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
+                .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses());
+
                     }
                 }).filter(studentCourse -> studentCourse.getCourse_price() > 3000)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
@@ -372,13 +357,13 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_take() {
         // take
-        Observable.from(InitDataMethodFunc.initStudentData())
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .take(2)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(student -> LogU.i("  take " + student.getStu_name()));
 
         // takeLast
-        Observable.from(InitDataMethodFunc.initStudentData())
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .takeLast(1)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(student -> LogU.i("  take " + student.getStu_name()));
@@ -387,21 +372,25 @@ public class RxJavaMethodFunc {
         Observable<Long> observableA = Observable.interval(300, TimeUnit.MILLISECONDS);
         Observable<Long> observableB = Observable.interval(800, TimeUnit.MILLISECONDS);
 
-        observableA.takeUntil(observableB).subscribe(new Subscriber<Long>() {
+        observableA.takeUntil(observableB).subscribe(new Observer<Long>() {
             @Override
-            public void onCompleted() {
-                LogU.i(" onCompleted  ");
+            public void onSubscribe(@NonNull Disposable disposable) {
+
             }
 
             @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(Long aLong) {
-
+            public void onNext(@NonNull Long aLong) {
                 LogU.i(" takeUntil  " + aLong);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.i(" onCompleted  ");
 
             }
         });
@@ -419,13 +408,13 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_skip() {
         // skip
-        Observable.from(InitDataMethodFunc.initStudentData())
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .skip(2)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(student -> LogU.i("  skip " + student.getStu_name()));
 
         // skipLast
-        Observable.from(InitDataMethodFunc.initStudentData())
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .skipLast(1)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(student -> LogU.i("  skipLast " + student.getStu_name()));
@@ -436,9 +425,10 @@ public class RxJavaMethodFunc {
      * elementAt(int)用来获取元素Observable发射的事件序列中的第n项数据，并当做唯一的数据发射出去。
      */
     public static void rxjava_elemnet() {
-        Observable.from(InitDataMethodFunc.initStudentData())
+        Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .elementAt(2)
-                .compose(RxJavaMethodFunc.newThreadSchedulers())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(student -> LogU.i("  elementAt " + student.getStu_name()));
 
     }
@@ -451,13 +441,18 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_Debounce() {
 
-        Observable.just(1, 2, 3, 4, 5, 6, 7, 8, 9).debounce(integer -> Observable.create((Observable.OnSubscribe<Integer>) subscriber -> {
-            //如果%2==0，则发射数据并调用了onCompleted结束，则不会被丢弃
-            if (integer % 2 == 0 && !subscriber.isUnsubscribed()) {
-                subscriber.onNext(integer);
-                subscriber.onCompleted();
+        /*Observable.just(1, 2, 3, 4, 5, 6, 7, 8, 9).debounce(integer -> Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+                //如果%2==0，则发射数据并调用了onCompleted结束，则不会被丢弃
+                if (integer % 2 == 0 && !observableEmitter.isDisposed()) {
+                    observableEmitter.onNext(integer);
+                    observableEmitter.onComplete();
+                }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogU.i("  integer " + integer);
             }
-        })).observeOn(AndroidSchedulers.mainThread()).subscribe(integer -> LogU.i("  integer " + integer));
+        });*/
 
 
     }
@@ -470,7 +465,7 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_throttleWithTimeout() {
 
-        Observable.create((Observable.OnSubscribe<Integer>) subscriber -> {
+        /*Observable.create((Observable.OnSubscribe<Integer>) subscriber -> {
             for (int i = 0; i < 10; i++) {
                 if (!subscriber.isUnsubscribed()) {
                     subscriber.onNext(i);
@@ -492,7 +487,7 @@ public class RxJavaMethodFunc {
         }).subscribeOn(Schedulers.computation())
                 .throttleWithTimeout(200, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> LogU.i(" integer  " + integer));
+                .subscribe(integer -> LogU.i(" integer  " + integer));*/
     }
 
 
@@ -505,14 +500,14 @@ public class RxJavaMethodFunc {
                 .subscribe(i -> LogU.i(i + " 数据 distinct()"));
 
         // 没有什么卵用
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
+        Observable.fromIterable(InitDataMethodFunc.initStudentCourseDataSame())
                 .distinct()
                 .subscribe(studentCourse -> {
                     LogU.i("  studentCourse distinct() name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
 
                 });
 
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
+        Observable.fromIterable(InitDataMethodFunc.initStudentCourseDataSame())
                 .distinct(StudentCourse::getCourse_name)
                 .subscribe(studentCourse -> {
                     LogU.i("  studentCourse distinct(fun) name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
@@ -528,7 +523,7 @@ public class RxJavaMethodFunc {
                 .distinctUntilChanged()
                 .subscribe(i -> LogU.i(i + " 数据  distinctUntilChanged() "));
 
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
+        Observable.fromIterable(InitDataMethodFunc.initStudentCourseDataSame())
                 .distinctUntilChanged(StudentCourse::getCourse_name)
                 .subscribe(studentCourse -> {
                     LogU.i("  studentCourse distinctUntilChanged(func) name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
@@ -542,19 +537,11 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_first() {
 
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
-                .first()
+        Observable.fromIterable(InitDataMethodFunc.initStudentCourseDataSame())
+                .first(new StudentCourse())
                 .subscribe(studentCourse -> {
                     LogU.i("  studentCourse  first() name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
                 });
-
-
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
-                .first(studentCourse -> StringU.equals("测试一班", studentCourse.getCourse_name()))
-                .subscribe(studentCourse -> {
-                    LogU.i("  studentCourse first(fun) name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
-                });
-
     }
 
 
@@ -563,17 +550,10 @@ public class RxJavaMethodFunc {
      */
     public static void rxjava_last() {
 
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
-                .last()
+        Observable.fromIterable(InitDataMethodFunc.initStudentCourseDataSame())
+                .last(new StudentCourse())
                 .subscribe(studentCourse -> {
                     LogU.i("  studentCourse last()  name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
-                });
-
-
-        Observable.from(InitDataMethodFunc.initStudentCourseDataSame())
-                .last(studentCourse -> StringU.equals("测试一班", studentCourse.getCourse_name()))
-                .subscribe(studentCourse -> {
-                    LogU.i("  studentCourse last(fun) name " + studentCourse.getCourse_name() + " desc " + studentCourse.getCourse_desc());
                 });
 
     }
@@ -596,19 +576,12 @@ public class RxJavaMethodFunc {
         Observable.merge(letterSequence, numberSequence)
                 .subscribe(new Observer<Serializable>() {
                     @Override
-                    public void onCompleted() {
-                        LogU.i(" onCompleted  ");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        LogU.e(" onError  " + e.getMessage());
+                    public void onSubscribe(@NonNull Disposable disposable) {
 
                     }
 
                     @Override
-                    public void onNext(Serializable serializable) {
+                    public void onNext(@NonNull Serializable serializable) {
                         LogU.i(" onNext  " + serializable.toString());
 /*
                         if (serializable instanceof String) {
@@ -616,6 +589,16 @@ public class RxJavaMethodFunc {
                         } else if (serializable instanceof Long) {
                             LogU.i("数字  " + serializable);
                         }*/
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        LogU.e(" onError  " + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogU.i(" onCompleted  ");
                     }
                 });
 
@@ -635,24 +618,25 @@ public class RxJavaMethodFunc {
         Observable<String> numberSequence = Observable.interval(500, TimeUnit.MILLISECONDS)
                 .map(aLong -> aLong + "").take(5);
 
-        numberSequence.startWith(letterSequence).subscribe(new Observer<Serializable>() {
+        numberSequence.startWith(letterSequence).subscribe(new Observer<String>() {
             @Override
-            public void onCompleted() {
+            public void onSubscribe(@NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.i(" onNext  " + s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.e(" onError  " + throwable.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
                 LogU.i(" onCompleted  ");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-                LogU.e(" onError  " + e.getMessage());
-
-            }
-
-            @Override
-            public void onNext(Serializable serializable) {
-                LogU.i(" onNext  " + serializable.toString());
-                System.out.println(" sys  onNext  " + serializable.toString());
-
             }
         });
 
@@ -701,24 +685,29 @@ public class RxJavaMethodFunc {
 
         Observable.zip(letterSequence, numberSequence, (s, s2) -> s + s2).subscribe(new Observer<Serializable>() {
             @Override
-            public void onCompleted() {
-                LogU.i(" onCompleted  ");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-                LogU.e(" onError  " + e.getMessage());
+            public void onSubscribe(@NonNull Disposable disposable) {
 
             }
 
             @Override
-            public void onNext(Serializable serializable) {
+            public void onNext(@NonNull Serializable serializable) {
                 LogU.i(" onNext  " + serializable.toString());
                 System.out.println(" sys  onNext  " + serializable.toString());
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.e(" onError  " + throwable.getMessage());
 
             }
+
+            @Override
+            public void onComplete() {
+                LogU.i(" onCompleted  ");
+            }
         });
+
+
     }
 
 
@@ -770,18 +759,24 @@ public class RxJavaMethodFunc {
                 (house, aLong) -> aLong + "-->" + house.getLatitude()
         ).subscribe(new Observer<String>() {
             @Override
-            public void onCompleted() {
+            public void onSubscribe(@NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.i(" s == " + s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.i("Error:" + throwable.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
                 LogU.i("onCompleted");
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                LogU.i("Error:" + e.getMessage());
-            }
-
-            @Override
-            public void onNext(String s) {
-                LogU.i(" s == "+s);
             }
         });
 

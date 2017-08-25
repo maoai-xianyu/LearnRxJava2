@@ -7,7 +7,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 

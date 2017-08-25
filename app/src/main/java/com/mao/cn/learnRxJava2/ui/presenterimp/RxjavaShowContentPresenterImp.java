@@ -19,14 +19,15 @@ import com.mao.cn.learnRxJava2.ui.presenter.RxjavaShowContentPresenter;
 import com.mao.cn.learnRxJava2.utils.network.NetworkUtils;
 import com.mao.cn.learnRxJava2.utils.tools.GsonU;
 import com.mao.cn.learnRxJava2.utils.tools.ListU;
-import com.mao.cn.learnRxJava2.utils.tools.LogU;
 import com.mao.cn.learnRxJava2.utils.tools.StringU;
 
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.functions.Func1;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+
 
 /**
  * DESC   :
@@ -35,13 +36,13 @@ import rx.subscriptions.CompositeSubscription;
 public class RxjavaShowContentPresenterImp extends BasePresenterImp implements RxjavaShowContentPresenter {
     RxjavaShowContentInteractor interactor;
     IRxjavaShowContent viewInterface;
-    private CompositeSubscription subscriptions;
+    private  CompositeDisposable comDisposable;
 
     public RxjavaShowContentPresenterImp(IRxjavaShowContent viewInterface, RxjavaShowContentInteractor rxjavaShowContentInteractor) {
         super();
         this.viewInterface = viewInterface;
         this.interactor = rxjavaShowContentInteractor;
-        this.subscriptions = new CompositeSubscription();
+        this.comDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -51,52 +52,41 @@ public class RxjavaShowContentPresenterImp extends BasePresenterImp implements R
             return;
         }
         viewInterface.showLoadingDialog("");
-        Subscription subscribe = interactor.getMovieTop(start, count).onTerminateDetach().flatMap(new Func1<String, Observable<String>>() {
+        Observable<String> observable = interactor.getMovieTop(start, count).onTerminateDetach().flatMap(new Function<String, ObservableSource<String>>() {
             @Override
-            public Observable<String> call(String s) {
+            public ObservableSource<String> apply(@NonNull String s) throws Exception {
                 return Observable.just(s);
             }
-        }).compose(applyIoSchedulers()).subscribe(new Observer<String>() {
-            @Override
-            public void onCompleted() {
-                viewInterface.hideLoadingDialog();
+        }).compose(applyIoSchedulers());
+        Disposable disposable = observable.subscribe(s -> {
+            viewInterface.hideLoadingDialog();
+            Movie convert = null;
+            try {
+                convert = GsonU.convert(s, Movie.class);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
             }
-
-            @Override
-            public void onError(Throwable e) {
-                viewInterface.hideLoadingDialog();
-                viewInterface.interError(e);
+            if (convert != null && StringU.isNotEmpty(convert.getTitle()) && ListU.notEmpty(convert.getSubjects())) {
+                viewInterface.showTopMovie(convert.getSubjects(), convert.getTitle());
+            } else {
                 viewInterface.showTopMovie(null, "");
             }
-
-            @Override
-            public void onNext(String s) {
-                LogU.i("  数据  "+s);
-                Movie convert = null;
-                try {
-                    convert = GsonU.convert(s, Movie.class);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-                if (convert != null && StringU.isNotEmpty(convert.getTitle()) && ListU.notEmpty(convert.getSubjects())) {
-                    viewInterface.showTopMovie(convert.getSubjects(), convert.getTitle());
-                } else {
-                    viewInterface.showTopMovie(null, "");
-                }
-
-            }
+        }, throwable -> {
+            viewInterface.hideLoadingDialog();
+            viewInterface.interError(throwable);
+            viewInterface.showTopMovie(null, "");
         });
 
-        if (subscriptions != null){
-            subscriptions.add(subscribe);
+        if (comDisposable != null) {
+            comDisposable.add(disposable);
         }
     }
 
 
     @Override
     public void onDestroySubscribe() {
-        if (subscriptions != null) {
-            subscriptions.unsubscribe();
+        if (comDisposable != null) {
+            comDisposable.dispose();
         }
     }
 }

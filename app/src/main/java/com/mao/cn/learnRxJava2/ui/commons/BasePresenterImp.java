@@ -5,9 +5,9 @@ import android.content.Context;
 import com.mao.cn.learnRxJava2.LearnRxJava2Application;
 import com.mao.cn.learnRxJava2.utils.tools.PreferenceU;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 // +----------------------------------------------------------------------
@@ -27,7 +27,7 @@ public abstract class BasePresenterImp implements BasePresenter {
 
     }
 
-    protected <T> Observable.Transformer<T, T> applyIoSchedulers() {
+    protected <T> ObservableTransformer<T, T> applyIoSchedulers() {
         return tObservable -> tObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

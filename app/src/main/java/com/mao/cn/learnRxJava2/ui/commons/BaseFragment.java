@@ -16,10 +16,10 @@ import com.mao.cn.learnRxJava2.wedget.dialog.LoadingDialog;
 
 import java.lang.reflect.Field;
 
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public abstract class BaseFragment extends CommFragment implements BaseViewInferface {
 
@@ -169,7 +169,7 @@ public abstract class BaseFragment extends CommFragment implements BaseViewInfer
 
 
     // 处理事件的方法
-    protected <T> Observable.Transformer<T, T> timer() {
+    protected <T> ObservableTransformer<T, T> timer() {
         return observable -> observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

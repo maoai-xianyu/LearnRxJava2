@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * DESC   :

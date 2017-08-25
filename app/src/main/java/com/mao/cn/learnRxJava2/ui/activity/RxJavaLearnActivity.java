@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mao.cn.learnRxJava2.R;
 import com.mao.cn.learnRxJava2.component.AppComponent;
 import com.mao.cn.learnRxJava2.component.DaggerRxJavaLearnComponent;
@@ -44,12 +44,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.mao.cn.learnRxJava2.R.id.tv_show;
 
@@ -110,7 +110,6 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("rxjava_Scan");
         strings.add("rxjava_GroupBy");
         strings.add("------------------");
-        strings.add("rxjava_lift");
         strings.add("rxjava_thread");
         strings.add("rxjava_threadM");
         strings.add("------------------");
@@ -186,9 +185,6 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                     break;
                 case "rxjava_GroupBy":
                     rxjava_GroupByFun();
-                    break;
-                case "rxjava_lift":
-                    rxjava_liftFun();
                     break;
                 case "rxjava_thread":
                     rxjava_threadFun();
@@ -367,12 +363,6 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         RxJavaMethodFunc.changeThreadMore();
     }
 
-    private void rxjava_liftFun() {
-        svImage.setVisibility(View.VISIBLE);
-        tvShow.setText(String.valueOf("as 查看 lift log"));
-        RxJavaMethodFunc.rxjava_lift();
-
-    }
 
     private void rxjava_GroupByFun() {
         svImage.setVisibility(View.VISIBLE);
@@ -455,7 +445,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
             }
         }.start();*/
 
-        Observable.from(files).filter(file -> StringU.endsWith(file.getName(), ".jpg"))
+        Observable.fromIterable(files).filter(file -> StringU.endsWith(file.getName(), ".jpg"))
                 .map(file -> ResourceU.getBitmap("images_cover/" + file.getName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(bitmap -> ivShow.setImageBitmap(bitmap));
@@ -464,39 +454,17 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
 
 
         // 过滤
-        Observable.from(students)
-                .flatMap(new Func1<Student, Observable<StudentCourse>>() {
+        Observable.fromIterable(students)
+                .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
                     @Override
-                    public Observable<StudentCourse> call(Student student) {
-                        return Observable.from(student.getStudentCourses());
+                    public ObservableSource<StudentCourse> apply(@NonNull Student student) throws Exception {
+                        return Observable.fromIterable(student.getStudentCourses());
                     }
                 }).filter(studentCourse -> studentCourse.getCourse_price() > 3000)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.toString()));
 
-
-        Observable.just("test")
-                .asObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(Throwable::printStackTrace)
-                .onErrorResumeNext(throwable -> Observable.empty())
-                .subscribe(LogU::i);
-
-
         Observable<String> observable = Observable.just("test", "world");
-
-        //处理onNext()中的内容
-        Action1<String> onNextAction = LogU::i;
-
-        //处理onError()中的内容
-        Action1<Throwable> onErrorAction = throwable -> LogU.e(throwable.getMessage());
-
-        //处理onCompleted()中的内容
-        Action0 onCompletedAction = () -> LogU.i("complete");
-
-
-        observable.subscribe(onNextAction, onErrorAction, onCompletedAction);
 
     }
 
