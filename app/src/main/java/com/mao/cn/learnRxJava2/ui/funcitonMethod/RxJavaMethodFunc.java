@@ -9,7 +9,6 @@ import com.mao.cn.learnRxJava2.model.Student;
 import com.mao.cn.learnRxJava2.model.StudentCourse;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 import com.mao.cn.learnRxJava2.utils.tools.ResourceU;
-import com.mao.cn.learnRxJava2.utils.tools.StringU;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -20,13 +19,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.FlowableTransformer;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
@@ -39,7 +43,31 @@ import io.reactivex.schedulers.Schedulers;
 public class RxJavaMethodFunc {
 
 
+    private static CompositeDisposable compositeDisposable;
+
+    public static void getInstance() {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+    }
+
+    public static void clearDisposable() {
+        LogU.i("  clearDisposable ");
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
+            compositeDisposable.clear();
+        }
+    }
     //-----------------------------------------------------------------------------线程控制：Scheduler
+
+    /**
+     * subscribeOn() 指定的是上游发送事件的线程, observeOn() 指定的是下游接收事件的线程.
+     * <p>
+     * 多次指定上游的线程只有第一次指定的有效, 也就是说多次调用subscribeOn() 只有第一次的有效, 其余的会被忽略.
+     * <p>
+     * 多次指定下游的线程是可以的, 也就是说每调用一次observeOn() , 下游的线程就会切换一次.
+     */
+
 
     // 总是启用新线程，并在新线程执行操作
     public static <T> ObservableTransformer<T, T> newThreadSchedulers() {
@@ -64,6 +92,12 @@ public class RxJavaMethodFunc {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    // FlowableTransformer 背压
+    public static <T> FlowableTransformer<T, T> toMain() {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     /**
      * RxJava 多次切换线程
      * observeOn() 指定的是它之后的操作所在的线程。
@@ -71,13 +105,14 @@ public class RxJavaMethodFunc {
      */
     public static void changeThreadMore() {
         Observable.just(1, 2, 3, 4)
+                .subscribeOn(Schedulers.newThread())
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
-                .map(integer -> integer + "数字 new线程")
-                .observeOn(Schedulers.io())
-                .map(s -> StringU.replace(s, "数字 new线程", "io 线程"))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> LogU.i(" num " + s));
+                .doOnNext(integer -> LogU.i("  integer " + integer + " after observeOn(main), current thraed is  " + Thread.currentThread().getName()))
+                .observeOn(Schedulers.io())
+                .doOnNext(integer -> LogU.i("  integer " + integer + " after observeOn(io), current thraed is  " + Thread.currentThread().getName()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> LogU.i(s + "  thread  " + Thread.currentThread().getName()));
     }
 
 
@@ -196,10 +231,10 @@ public class RxJavaMethodFunc {
                 })
                 //转成List
                 .toList()
-                .map(strings -> {
-                    LogU.i("Transform Data Reverse List: " + strings.toString());
-                    Collections.reverse(strings);
-                    return strings;
+                .map(stringList -> {
+                    LogU.i("Transform Data Reverse List: " + stringList.toString());
+                    Collections.reverse(stringList);
+                    return stringList;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -806,4 +841,171 @@ public class RxJavaMethodFunc {
 
     }
 
+
+    /**
+     * 注意: 调用dispose()并不会导致上游不再继续发送事件, 上游会继续发送剩余的事件.
+     * <p>
+     * Disposable的用处不止这些,线程的调度, 我们会发现它的重要性.
+     * <p>
+     * <p>
+     * RxJava中已经内置了一个容器 CompositeDisposable, 每当我们得到一个Disposable时就调用CompositeDisposable.add()将它添加到容器中,
+     * 在退出的时候, 调用CompositeDisposable.clear() 即可切断所有的水管.
+     */
+    public static void rxjava_create() {
+
+        Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            observableEmitter.onNext(1);
+            LogU.i(" Emitter " + 1);
+            observableEmitter.onNext(2);
+            LogU.i(" Emitter " + 2);
+            observableEmitter.onNext(3);
+            LogU.i(" Emitter " + 3);
+            observableEmitter.onComplete();
+            LogU.i(" Emitter  onComplete");
+            observableEmitter.onNext(4);
+            LogU.i(" Emitter " + 4);
+            observableEmitter.onNext(5);
+            LogU.i(" Emitter " + 5);
+        }).subscribe(new Observer<Integer>() {
+
+            private Disposable mDisposable;
+            private int i;
+
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
+                LogU.i(" onSubscribe ");
+                mDisposable = disposable;
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                LogU.i(" onNext " + integer);
+                i++;
+                if (i == 2) {
+                    LogU.i(" mDisposable " + mDisposable);
+                    mDisposable.dispose();
+                    LogU.i(" mDisposable " + mDisposable.isDisposed());
+                }
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.i(" throwable " + throwable);
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.i(" onComplete ");
+            }
+        });
+
+    }
+
+    /**
+     * 一是从数量上进行治理, 减少发送进水缸里的事件
+     * 二是从速度上进行治理, 减缓事件发送进水缸的速度
+     */
+    public static void rxjava_define_BackPressure() {
+
+        // oom
+        /*Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+            }
+        }).subscribe(integer -> {
+            LogU.i("  主线程睡2秒  值比较平缓  "+integer);
+        });*/
+
+        //emitter.onNext(i)其实就相当于直接调用了Consumer中的:
+        /*Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+            }
+        }).subscribe(integer -> {
+            Thread.sleep(2000);
+            LogU.i("  主线程睡2秒  值比较平缓  "+integer);
+        });*/
+
+        // 切换线程之后 oom
+        /*Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+            }
+        }).compose(applyIoSchedulers()).subscribe(integer -> {
+            Thread.sleep(2000);
+            LogU.i("  主线程睡2秒  值比较平缓  "+integer);
+        });*/
+
+        // 方法一：上游速度太快，（filter 或者 sample 取样）减少数量，但是会丢失大量的事件,依旧会oom
+        /*Observable<Integer> integerObservable = Observable.create(observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+            }
+        });
+        Disposable subscribe = integerObservable.subscribeOn(Schedulers.io())
+                .filter(integer -> integer % 100 == 0)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    LogU.i("  值比较平缓  filter  " + integer);
+                });*/
+
+        // 取样
+        /*Disposable subscribe = Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+                LogU.i("  subscribe 发送  " + i);
+            }
+        }).subscribeOn(Schedulers.io())
+                .sample(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    LogU.i("  值比较平缓 sample " + integer);
+                });
+        compositeDisposable.add(subscribe);*/
+
+
+        // 方法二：减慢上游的发射速度
+        /*Disposable subscribe = Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
+            for (int i = 0; ; i++) {
+                observableEmitter.onNext(i);
+                Thread.sleep(2000);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> {
+                    LogU.i("  值比较平缓 sample " + integer);
+                });*/
+
+
+        // 无线循环的发射，及时下游不接收，也会占有内存
+        Observable<Integer> sample = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> observableEmitter) throws Exception {
+                for (int i = 0; ; i++) {
+                    observableEmitter.onNext(i);
+                }
+            }
+        }).subscribeOn(Schedulers.io()).sample(2, TimeUnit.SECONDS);
+
+
+
+        Observable<String> stringObservable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> observableEmitter) throws Exception {
+                observableEmitter.onNext("A");
+                observableEmitter.onNext("B");
+            }
+        }).subscribeOn(Schedulers.io());
+
+
+        Observable.zip(sample, stringObservable, new BiFunction<Integer, String, String>() {
+            @Override
+            public String apply(@NonNull Integer integer, @NonNull String s) throws Exception {
+                return integer + "  " + s;
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> LogU.i(" accept " + s), throwable -> LogU.e(" accept " + throwable));
+    }
 }

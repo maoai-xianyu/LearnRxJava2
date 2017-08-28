@@ -46,12 +46,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.mao.cn.learnRxJava2.R.id.tv_show;
 
 /**
  * DESC   :
@@ -68,7 +68,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
     TextView tvHeaderTitle;
     @BindView(R.id.rvData)
     RecyclerView rvData;
-    @BindView(tv_show)
+    @BindView(R.id.tv_show)
     TextView tvShow;
     @BindView(R.id.sv_image)
     SimpleDraweeView svImage;
@@ -99,6 +99,10 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings = new ArrayList<>();
 
         strings.add("rxjava_start");
+        strings.add("rxjava_create");
+        strings.add("------------------");
+        strings.add("rxjava_thread");
+        strings.add("rxjava_threadM");
         strings.add("------------------");
         strings.add("rxjava_map");
         strings.add("rxjava_flatmap");
@@ -110,8 +114,8 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("rxjava_Scan");
         strings.add("rxjava_GroupBy");
         strings.add("------------------");
-        strings.add("rxjava_thread");
-        strings.add("rxjava_threadM");
+        strings.add("rxjava_define_BackPressure");
+        strings.add("rxjava_clear_clearDisposable");
         strings.add("------------------");
         strings.add("rxjava_rxBinding");
         strings.add("------------------");
@@ -158,6 +162,9 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
             switch (str) {
                 case "rxjava_start":
                     rxjava_startFun();
+                    break;
+                case "rxjava_create":
+                    rxjava_createFun();
                     break;
                 case "rxjava_map":
                     rxjava_mapFun();
@@ -243,10 +250,34 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 case "rxjava_join":
                     rxjava_joinFun();
                     break;
+                case "rxjava_define_BackPressure":
+                    rxjava_define_BackPressureFun();
+                    break;
+                case "rxjava_clear_clearDisposable":
+                    rxjava_clear_clearDisposableFun();
+                    break;
                 default:
                     break;
             }
         });
+    }
+
+    private void rxjava_clear_clearDisposableFun() {
+        tvShow.setText(String.valueOf("as 查看 clearDisposable log"));
+        RxJavaMethodFunc.clearDisposable();
+    }
+
+    private void rxjava_define_BackPressureFun() {
+        RxJavaMethodFunc.getInstance();
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_createFun  dis log"));
+        RxJavaMethodFunc.rxjava_define_BackPressure();
+    }
+
+    private void rxjava_createFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_createFun  disposable log"));
+        RxJavaMethodFunc.rxjava_create();
     }
 
     private void rxjava_joinFun() {
@@ -464,8 +495,46 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(studentCourse -> LogU.i(studentCourse.toString()));
 
-        Observable<String> observable = Observable.just("test", "world");
+        LogU.i("-------------------------------------------------");
+        // create  创建一个上游的 observable
+        Observable<Integer> observable = Observable.create(observableEmitter -> {
+            observableEmitter.onNext(1);
+            observableEmitter.onNext(2);
+            observableEmitter.onNext(3);
+            observableEmitter.onNext(4);
+            observableEmitter.onComplete();
+            observableEmitter.onNext(5);
+        });
 
+        // 创建一个下游的 Observer
+        /**
+         * nComplete和onError必须唯一并且互斥, 即不能发多个onComplete, 也不能发多个onError,
+         * 也不能先发一个onComplete, 然后再发一个onError, 反之亦然
+         */
+        Observer<Integer> observer = new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
+                LogU.i("  disposable  onSubscribe " + disposable);
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                LogU.i("  onNext " + integer);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.i("  throwable ");
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.i("  onComplete ");
+
+            }
+        };
+        observable.subscribe(observer);
     }
 
     @Override
@@ -474,5 +543,11 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 .appComponent(appComponent)
                 .rxJavaLearnModule(new RxJavaLearnModule(this))
                 .build().inject(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxJavaMethodFunc.clearDisposable();
     }
 }
