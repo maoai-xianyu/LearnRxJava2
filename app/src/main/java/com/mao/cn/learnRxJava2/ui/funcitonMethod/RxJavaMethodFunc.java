@@ -19,6 +19,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -44,6 +48,7 @@ public class RxJavaMethodFunc {
 
 
     private static CompositeDisposable compositeDisposable;
+
 
     public static void getInstance() {
         if (compositeDisposable == null) {
@@ -990,7 +995,6 @@ public class RxJavaMethodFunc {
         }).subscribeOn(Schedulers.io()).sample(2, TimeUnit.SECONDS);
 
 
-
         Observable<String> stringObservable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<String> observableEmitter) throws Exception {
@@ -1007,5 +1011,97 @@ public class RxJavaMethodFunc {
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> LogU.i(" accept " + s), throwable -> LogU.e(" accept " + throwable));
+    }
+
+    /**
+     * 背压Flowable  默认也是有个 128个事件，如果发送了多余的事件，且没有处理，就会有异常 MissingBackpressureException
+     * <p>
+     * BackpressureStrategy.BUFFER  扩充缓冲池
+     * <p>
+     * BackpressureStrategy.ERROR
+     * <p>
+     * BackpressureStrategy.DROP  Drop就是直接把存不下的事件丢弃
+     * <p>
+     * BackpressureStrategy.LATEST Latest就是只保留最新的事件
+     */
+    public static void rxjava_clear_flowable() {
+        Flowable<Integer> integerFlowable = Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull FlowableEmitter<Integer> flowableEmitter) throws Exception {
+
+                flowableEmitter.onNext(1);
+                flowableEmitter.onNext(2);
+                flowableEmitter.onNext(3);
+                flowableEmitter.onNext(4);
+                flowableEmitter.onComplete();
+            }
+        }, BackpressureStrategy.LATEST);
+
+        Subscriber<Integer> subscriber = new Subscriber<Integer>() {
+            @Override
+            public void onSubscribe(Subscription subscription) {
+
+                LogU.i(" onSubscribe ");
+                subscription.request(Long.MAX_VALUE);
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogU.i(" onNext " + integer);
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                LogU.i(" onError " + throwable.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.i(" onNonCompleteext ");
+            }
+        };
+
+        integerFlowable.subscribe(subscriber);
+
+
+        Flowable.interval(1, TimeUnit.SECONDS)
+                .onBackpressureDrop()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Long>() {
+                    @Override
+                    public void onSubscribe(Subscription subscription) {
+                        LogU.i("  onSubscribe  ");
+
+                        subscription.request(Long.MAX_VALUE);
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+
+                        LogU.i("  onNext  " + aLong);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                        LogU.i("  onError  " + throwable.getMessage());
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogU.i("  onComplete  ");
+                    }
+                });
+
+
     }
 }

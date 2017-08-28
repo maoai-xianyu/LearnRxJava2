@@ -116,6 +116,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("------------------");
         strings.add("rxjava_define_BackPressure");
         strings.add("rxjava_clear_clearDisposable");
+        strings.add("rxjava_clear_flowable");
         strings.add("------------------");
         strings.add("rxjava_rxBinding");
         strings.add("------------------");
@@ -256,10 +257,19 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 case "rxjava_clear_clearDisposable":
                     rxjava_clear_clearDisposableFun();
                     break;
+                case "rxjava_clear_flowable":
+                    rxjava_clear_flowableFun();
+                    break;
                 default:
                     break;
             }
         });
+    }
+
+    private void rxjava_clear_flowableFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_clear_flowable log"));
+        RxJavaMethodFunc.rxjava_clear_flowable();
     }
 
     private void rxjava_clear_clearDisposableFun() {
@@ -270,7 +280,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
     private void rxjava_define_BackPressureFun() {
         RxJavaMethodFunc.getInstance();
         svImage.setVisibility(View.VISIBLE);
-        tvShow.setText(String.valueOf("as 查看 rxjava_createFun  dis log"));
+        tvShow.setText(String.valueOf("as 查看 rxjava_BackPressure  解释 log"));
         RxJavaMethodFunc.rxjava_define_BackPressure();
     }
 
