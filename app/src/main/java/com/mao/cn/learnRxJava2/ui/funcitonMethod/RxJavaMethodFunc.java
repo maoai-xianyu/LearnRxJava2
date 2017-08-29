@@ -35,6 +35,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
@@ -1099,6 +1100,29 @@ public class RxJavaMethodFunc {
                     @Override
                     public void onComplete() {
                         LogU.i("  onComplete  ");
+                    }
+                });
+
+
+    }
+
+    /**
+     * buffer(count,skip)，作用是将 Observable 中的数据按 skip (步长) 分成最大不超过 count 的 buffer ，
+     * 然后生成一个  Observable
+     */
+    public static void rxjava_buffer() {
+
+        Observable.just(1, 2, 3, 4, 5)
+                .buffer(3)
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        LogU.i(" integers.size() " + integers.size());
+
+                        for (Integer i : integers) {
+                            LogU.i(" 遍历 " + i);
+                        }
+                        LogU.i("");
                     }
                 });
 
