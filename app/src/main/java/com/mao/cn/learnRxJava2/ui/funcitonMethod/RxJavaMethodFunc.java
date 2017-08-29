@@ -1128,4 +1128,25 @@ public class RxJavaMethodFunc {
 
 
     }
+
+    /**
+     * doOnNext\让订阅者在接收到数据之前干点有意思的事情
+     */
+    public static void rxjava_() {
+
+        Observable.just(1, 2, 3, 4, 5)
+                .doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        LogU.i("  保存  "+integer);
+                    }
+                }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogU.i(" 处理  "+integer);
+            }
+        });
+
+
+    }
 }
