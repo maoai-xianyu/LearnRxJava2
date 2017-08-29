@@ -85,6 +85,16 @@ public class LoadingActivity extends BaseActivity implements ILoading {
 
         compositeDisposable.add(subscribe);
 
+        // 或者用take
+        /*Observable.interval(5, TimeUnit.SECONDS).compose(timer()).take(1).subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                LogU.i("  aLong  " + aLong);
+                startActivity(MainActivity.class, true);
+            }
+        });*/
+
+
         // 定时 timer 可以用
         /*Observable.timer(5, TimeUnit.SECONDS).compose(timer()).subscribe(new Consumer<Long>() {
             @Override

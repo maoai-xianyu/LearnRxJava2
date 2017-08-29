@@ -137,6 +137,9 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("rxjava_zip");
         strings.add("rxjava_combineLatest");
         strings.add("rxjava_join");
+        strings.add("------------------");
+        strings.add("rxjava_buffer");
+        strings.add("rxjava_doOnNext");
 
         LinearLayoutManager linearLayoutCourse = new LinearLayoutManager(context);
         linearLayoutCourse.setOrientation(LinearLayoutManager.VERTICAL);
@@ -260,10 +263,28 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 case "rxjava_clear_flowable":
                     rxjava_clear_flowableFun();
                     break;
+                case "rxjava_buffer":
+                    rxjava_bufferFun();
+                    break;
+                case "rxjava_doOnNext":
+                    rxjava_doOnNextFun();
+                    break;
                 default:
                     break;
             }
         });
+    }
+
+    private void rxjava_doOnNextFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_doOnNextFun log"));
+        RxJavaMethodFunc.rxjava_doOnNext();
+    }
+
+    private void rxjava_bufferFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_bufferFun log"));
+        RxJavaMethodFunc.rxjava_buffer();
     }
 
     private void rxjava_clear_flowableFun() {

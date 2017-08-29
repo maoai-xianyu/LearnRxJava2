@@ -1132,7 +1132,7 @@ public class RxJavaMethodFunc {
     /**
      * doOnNext\让订阅者在接收到数据之前干点有意思的事情
      */
-    public static void rxjava_() {
+    public static void rxjava_doOnNext() {
 
         Observable.just(1, 2, 3, 4, 5)
                 .doOnNext(new Consumer<Integer>() {
