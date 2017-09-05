@@ -111,7 +111,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("rxjava_FlatMapIterable");
         strings.add("rxjava_SwitchMap_one");
         strings.add("rxjava_SwitchMap_new");
-        strings.add("rxjava_Scan");
+        strings.add("rxjava_Scan_reduce");
         strings.add("rxjava_GroupBy");
         strings.add("------------------");
         strings.add("rxjava_define_BackPressure");
@@ -140,6 +140,9 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         strings.add("------------------");
         strings.add("rxjava_buffer");
         strings.add("rxjava_doOnNext");
+        strings.add("rxjava_single_and_debounce");
+        strings.add("rxjava_defer");
+        strings.add("rxjava_windowFun");
 
         LinearLayoutManager linearLayoutCourse = new LinearLayoutManager(context);
         linearLayoutCourse.setOrientation(LinearLayoutManager.VERTICAL);
@@ -191,8 +194,8 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 case "rxjava_SwitchMap_new":
                     rxjava_SwitchMapFunNew();
                     break;
-                case "rxjava_Scan":
-                    rxjava_ScanFun();
+                case "rxjava_Scan_reduce":
+                    rxjava_Scan_reduceFun();
                     break;
                 case "rxjava_GroupBy":
                     rxjava_GroupByFun();
@@ -269,10 +272,40 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 case "rxjava_doOnNext":
                     rxjava_doOnNextFun();
                     break;
+                case "rxjava_single_and_debounce":
+                    rxjava_single_and_debounceFun();
+                    break;
+                case "rxjava_defer":
+                    rxjava_deferFun();
+                    break;
+                case "rxjava_windowFun":
+                    rxjava_windowFun();
+                    break;
                 default:
                     break;
             }
         });
+    }
+
+    private void rxjava_windowFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_window log"));
+        RxJavaMethodFunc.rxjava_window();
+
+    }
+
+    private void rxjava_deferFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_defer log"));
+        RxJavaMethodFunc.rxjava_defer();
+
+    }
+
+    private void rxjava_single_and_debounceFun() {
+        svImage.setVisibility(View.VISIBLE);
+        tvShow.setText(String.valueOf("as 查看 rxjava_single_and_debounce log"));
+        RxJavaMethodFunc.rxjava_single_and_debounce();
+
     }
 
     private void rxjava_doOnNextFun() {
@@ -432,10 +465,10 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         RxJavaMethodFunc.rxjava_GroupBy();
     }
 
-    private void rxjava_ScanFun() {
+    private void rxjava_Scan_reduceFun() {
         svImage.setVisibility(View.VISIBLE);
         tvShow.setText(String.valueOf("as 查看 Scan log"));
-        RxJavaMethodFunc.rxjava_scan();
+        RxJavaMethodFunc.rxjava_scan_reduce();
     }
 
     private void rxjava_SwitchMapFun() {

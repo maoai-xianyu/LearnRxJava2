@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.BackpressureStrategy;
@@ -24,12 +26,15 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.FlowableTransformer;
+import io.reactivex.MaybeTransformer;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -99,10 +104,16 @@ public class RxJavaMethodFunc {
     }
 
     // FlowableTransformer 背压
-    public static <T> FlowableTransformer<T, T> toMain() {
+    public static <T> FlowableTransformer<T, T> toFlowableTransformer() {
         return upstream -> upstream.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public static <T> MaybeTransformer<T, T> toMaybeTransformer() {
+        return maybe -> maybe.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 
     /**
      * RxJava 多次切换线程
@@ -345,12 +356,19 @@ public class RxJavaMethodFunc {
 
     /**
      * scan()对一个序列的数据应用一个函数，并将这个函数的结果发射出去作为下个数据应用合格函数时的第一个参数使用。
+     * reduce 操作符每次用一个方法处理一个值，只要结果
      */
-    public static void rxjava_scan() {
+    public static void rxjava_scan_reduce() {
         Observable.just(1, 2, 3, 4, 5)
                 .scan((integer, integer2) -> integer + integer2)
                 .compose(RxJavaMethodFunc.newThreadSchedulers())
                 .subscribe(integer -> LogU.i(" scan " + integer));
+
+
+        Observable.just(1, 2, 3, 4, 5)
+                .reduce((integer, integer2) -> integer + integer2)
+                .compose(RxJavaMethodFunc.toMaybeTransformer())
+                .subscribe(integer -> LogU.i(" reduce " + integer));
     }
 
     /**
@@ -1138,15 +1156,148 @@ public class RxJavaMethodFunc {
                 .doOnNext(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer integer) throws Exception {
-                        LogU.i("  保存  "+integer);
+                        LogU.i("  保存  " + integer);
                     }
                 }).subscribe(new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) throws Exception {
-                LogU.i(" 处理  "+integer);
+                LogU.i(" 处理  " + integer);
+            }
+        });
+    }
+
+    /**
+     * Single 只会接收一个参数，而 SingleObserver 只会调用 onError() 或者 onSuccess()。
+     */
+    public static void rxjava_single_and_debounce() {
+        Single.just(new Random().nextInt())
+                .subscribe(new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable disposable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Integer integer) {
+
+                        LogU.i(" Single  " + integer);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        LogU.e(" Single  " + throwable.getMessage());
+
+                    }
+                });
+
+        // 过滤调发送时间小于500毫秒的发射事件
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                // send events with simulated time wait
+                emitter.onNext(1); // skip
+                Thread.sleep(400);
+                emitter.onNext(2); // deliver
+                Thread.sleep(505);
+                emitter.onNext(3); // skip
+                Thread.sleep(100);
+                emitter.onNext(4); // deliver
+                Thread.sleep(605);
+                emitter.onNext(5); // deliver
+                Thread.sleep(510);
+                emitter.onComplete();
+            }
+        }).debounce(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        LogU.i("debounce :" + integer + "\n");
+                    }
+                });
+
+
+    }
+
+
+    static Student student = new Student("zhang", "23", null);
+
+    /**
+     * defer 简单地时候就是每次订阅都会创建一个新的 Observable，并且如果没有被订阅，就不会产生新的 Observable。
+     */
+    public static void rxjava_defer() {
+
+        Observable<Integer> defer = Observable.defer(new Callable<ObservableSource<Integer>>() {
+            @Override
+            public ObservableSource<Integer> call() throws Exception {
+                return Observable.just(1, 2, 3);
+            }
+        });
+
+        defer.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                LogU.i(" onNext " + integer);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+                LogU.e(" onError " + throwable.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+
+                LogU.i(" onComplete ");
+
             }
         });
 
 
+        Observable<Student> studentObservable = Observable.defer(new Callable<ObservableSource<Student>>() {
+            @Override
+            public ObservableSource<Student> call() throws Exception {
+                return Observable.just(student);
+            }
+        });
+
+        student = new Student("zhao", "25", null);
+
+        studentObservable.subscribe(new Consumer<Student>() {
+            @Override
+            public void accept(Student student) throws Exception {
+                LogU.i(" student 更数据 " + student.getStu_name());
+            }
+        });
+
     }
+
+
+    /**
+     * window 按照实际划分窗口，将数据发送给不同的
+     * window 操作符会在时间间隔内缓存结果，类似于buffer缓存一个list集合，区别在于window将这个结果集合封装成了observable
+     */
+    public static void rxjava_window() {
+
+        Observable.interval(1, TimeUnit.SECONDS)
+                .take(15)
+                .window(3, TimeUnit.SECONDS)
+                .compose(applyIoSchedulers())
+                .subscribe(longObservable -> {
+                    LogU.i("  window  divide begin");
+                    longObservable.compose(applyIoSchedulers())
+                            .subscribe(aLong -> LogU.i("  window  divide aLong  " + aLong));
+                });
+
+
+    }
+
+
 }
