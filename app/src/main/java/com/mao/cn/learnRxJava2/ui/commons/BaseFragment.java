@@ -17,8 +17,9 @@ import com.mao.cn.learnRxJava2.wedget.dialog.LoadingDialog;
 import java.lang.reflect.Field;
 
 import io.reactivex.ObservableTransformer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.android.schedulers.*;
+
 import retrofit2.adapter.rxjava.HttpException;
 
 public abstract class BaseFragment extends CommFragment implements BaseViewInferface {
