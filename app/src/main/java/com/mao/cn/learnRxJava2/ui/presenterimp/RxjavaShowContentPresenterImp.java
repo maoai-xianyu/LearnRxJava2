@@ -23,10 +23,13 @@ import com.mao.cn.learnRxJava2.utils.tools.StringU;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -36,7 +39,7 @@ import io.reactivex.functions.Function;
 public class RxjavaShowContentPresenterImp extends BasePresenterImp implements RxjavaShowContentPresenter {
     RxjavaShowContentInteractor interactor;
     IRxjavaShowContent viewInterface;
-    private  CompositeDisposable comDisposable;
+    private CompositeDisposable comDisposable;
 
     public RxjavaShowContentPresenterImp(IRxjavaShowContent viewInterface, RxjavaShowContentInteractor rxjavaShowContentInteractor) {
         super();
@@ -80,6 +83,47 @@ public class RxjavaShowContentPresenterImp extends BasePresenterImp implements R
         if (comDisposable != null) {
             comDisposable.add(disposable);
         }
+    }
+
+    public void getMovieTopSingle(int start, int count) {
+        if (!NetworkUtils.isConnected(context)) {
+            viewInterface.onTip(context.getString(R.string.no_connect_net));
+            return;
+        }
+        viewInterface.showLoadingDialog("");
+        interactor.getMovieTopSingle(start, count)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        viewInterface.hideLoadingDialog();
+                        Movie convert = null;
+                        try {
+                            convert = GsonU.convert(s, Movie.class);
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        if (convert != null && StringU.isNotEmpty(convert.getTitle()) && ListU.notEmpty(convert.getSubjects())) {
+                            viewInterface.showTopMovie(convert.getSubjects(), convert.getTitle());
+                        } else {
+                            viewInterface.showTopMovie(null, "");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        viewInterface.hideLoadingDialog();
+                        viewInterface.interError(e);
+                        viewInterface.showTopMovie(null, "");
+                    }
+                });
+
     }
 
 

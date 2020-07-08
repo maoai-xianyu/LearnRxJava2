@@ -14,6 +14,7 @@ import com.mao.cn.learnRxJava2.model.MovieDetail;
 import com.mao.cn.learnRxJava2.utils.config.Config;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -150,6 +151,11 @@ public interface HttpApi {
     @GET("v2/movie/top250")
     @Headers(Config.HEADER_MAO)
     Observable<String> getTodayMovie(@Query("start") int start, @Query("count") int count);
+
+
+    @GET("v2/movie/top250")
+    @Headers(Config.HEADER_MAO)
+    Single<String> getTodayMovieSingle(@Query("start") int start, @Query("count") int count);
 
     /**
      * @param start

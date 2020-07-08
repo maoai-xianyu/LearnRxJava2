@@ -15,6 +15,7 @@ import com.mao.cn.learnRxJava2.http.RestApiAdapter;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 
 /**
@@ -31,6 +32,12 @@ public class RxjavaShowContentInteractor {
     public Observable<String> getMovieTop(int start, int count) {
         HttpApi httpApi = RestApiAdapter.getStringInstance().create(HttpApi.class);
         return httpApi.getTodayMovie(start, count);
+    }
+
+
+    public Single<String> getMovieTopSingle(int start, int count) {
+        HttpApi httpApi = RestApiAdapter.getStringInstance().create(HttpApi.class);
+        return httpApi.getTodayMovieSingle(start, count);
     }
 
 

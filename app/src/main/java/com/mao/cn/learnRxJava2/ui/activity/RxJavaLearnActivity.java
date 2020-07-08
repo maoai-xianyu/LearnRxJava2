@@ -47,9 +47,12 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -607,6 +610,67 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 .appComponent(appComponent)
                 .rxJavaLearnModule(new RxJavaLearnModule(this))
                 .build().inject(this);
+    }
+
+    private void function() {
+        Single<String> single = Single.just("1");
+        single.onErrorResumeNext();
+        single.onErrorReturn();
+        single.doOnError()
+        single.subscribeOn(Schedulers.io());
+        single.subscribeOn(Schedulers.newThread());
+        single.observeOn(AndroidSchedulers.mainThread());
+        single.subscribe(new SingleObserver<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+
+
+        Single<Integer> single1 = Single.just(1);
+
+        single1.map(new Function<Integer, String>() {
+            @Override
+            public String apply(Integer integer) throws Exception {
+                return String.valueOf(integer);
+            }
+        }).subscribe(new SingleObserver<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+
+
+        Observable.interval(5, TimeUnit.SECONDS).compose(timer()).subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                LogU.i("  aLong  " + aLong);
+                startActivity(MainActivity.class, true);
+            }
+        });
+
     }
 
     @Override
