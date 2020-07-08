@@ -614,9 +614,9 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
 
     private void function() {
         Single<String> single = Single.just("1");
-        single.onErrorResumeNext();
-        single.onErrorReturn();
-        single.doOnError()
+//        single.onErrorResumeNext();
+//        single.onErrorReturn();
+//        single.doOnError()
         single.subscribeOn(Schedulers.io());
         single.subscribeOn(Schedulers.newThread());
         single.observeOn(AndroidSchedulers.mainThread());
