@@ -45,6 +45,14 @@
                 android:layout_below="@+id/btn_desc_rxjava"
                 android:text="image图片" />
 
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="@dimen/d80"
+                android:layout_height="@dimen/d80"
+                android:layout_marginTop="@dimen/d20"
+                android:layout_below="@+id/btn_desc_image"
+                android:layout_centerHorizontal="true" />
+
         </RelativeLayout>
     </ScrollView>
 
