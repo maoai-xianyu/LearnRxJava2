@@ -1,7 +1,7 @@
 package com.mao.cn.learnRxJava2.ui.commons;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.widget.Toast;
 
 import com.mao.cn.learnRxJava2.LearnRxJava2Application;

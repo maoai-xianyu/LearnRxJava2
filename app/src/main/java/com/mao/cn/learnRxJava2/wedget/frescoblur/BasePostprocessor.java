@@ -6,7 +6,7 @@
 package com.mao.cn.learnRxJava2.wedget.frescoblur;
 
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.facebook.cache.common.CacheKey;
 import com.facebook.common.references.CloseableReference;
