@@ -92,8 +92,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.0.1'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     // 调用第三方封装的写法
     implementation 'com.tsy:myokhttp:1.1.4'
     implementation 'com.beetstra.jutf7:jutf7:1.0.0'
