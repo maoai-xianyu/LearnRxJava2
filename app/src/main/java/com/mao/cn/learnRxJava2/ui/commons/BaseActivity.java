@@ -23,6 +23,8 @@ import com.mao.cn.learnRxJava2.wedget.dialog.SingleDialog;
 
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -36,6 +38,7 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
     protected DefineTwoBottomDialog twoBottomDialog;
     protected SingleDialog singleDialog;
     protected LoadingDialog loadingDialog;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     public void getArgs(Bundle var1) {
@@ -56,7 +59,9 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
     public void setting() {
         LogU.i(" activity " + getClass().getName());
         LearnRxJava2Application.addAty(activity);
+        compositeDisposable = new CompositeDisposable();
         setupComponent(LearnRxJava2Application.getComponent());
+
 
     }
 
@@ -65,15 +70,17 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             // Translucent status bar
-            if (status)
+            if (status) {
                 window.setFlags(
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            }
             // Translucent navigation bar
-            if (navigation)
+            if (navigation) {
                 window.setFlags(
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
         }
     }
 
@@ -86,7 +93,9 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
 
     @Override
     public void showLoadingDialog(String msg) {
-        if (!checkActivityState()) return;
+        if (!checkActivityState()) {
+            return;
+        }
         activity.runOnUiThread(() -> {
             if (loadingDialog == null) {
                 loadingDialog = new LoadingDialog(activity);
@@ -98,30 +107,39 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
 
     @Override
     public void showLoadingDialog(int msg) {
-        if (!checkActivityState()) return;
+        if (!checkActivityState()) {
+            return;
+        }
         showLoadingDialog(getString(msg));
     }
 
     @Override
     public void hideLoadingDialog() {
-        if (!checkActivityState()) return;
+        if (!checkActivityState()) {
+            return;
+        }
         runOnUiThread(() -> {
-            if (loadingDialog != null && loadingDialog.isShowing())
+            if (loadingDialog != null && loadingDialog.isShowing()) {
                 loadingDialog.dismiss();
+            }
         });
 
     }
 
     @Override
     public void onTip(String msg) {
-        if (!checkActivityState()) return;
+        if (!checkActivityState()) {
+            return;
+        }
         runOnUiThread(() -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show());
     }
 
 
     @Override
     public void onTip(int msg) {
-        if (!checkActivityState()) return;
+        if (!checkActivityState()) {
+            return;
+        }
         onTip(getString(msg));
     }
 
@@ -135,10 +153,11 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
         switch (status) {
             case ValueMaps.ResponeCode.TYPE_CODE_401:
                 String content = JsonU.getString(error.getBody(), "error");
-                if (StringU.isEmpty(content))
+                if (StringU.isEmpty(content)) {
                     accessError(error.getRequestUrl());
-                else
+                } else {
                     accessError(content, error.getRequestUrl());
+                }
                 break;
             case ValueMaps.ResponeCode.TYPE_CODE_404:
                 break;
@@ -179,18 +198,20 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
         if (!singleDialog.isShowing()) {
             Effectstype effect = Effectstype.Slidetop;
             singleDialog.seTouchViewtCancle(false)
-                    .withMessage(message)
-                    .isCancelableOnTouchOutside(false) // def | isCancelable(true)
-                    .withDuration(700) // def
-                    .withEffect(effect) // def Effectstype.Slidetop
-                    .withTitle(getString(R.string.tips))
-                    .setButtonClick(new TokenErrorListener());
-            if (!activity.isFinishing())
+                .withMessage(message)
+                .isCancelableOnTouchOutside(false) // def | isCancelable(true)
+                .withDuration(700) // def
+                .withEffect(effect) // def Effectstype.Slidetop
+                .withTitle(getString(R.string.tips))
+                .setButtonClick(new TokenErrorListener());
+            if (!activity.isFinishing()) {
                 singleDialog.show();
+            }
         }
     }
 
     class TokenErrorListener implements View.OnClickListener {
+
         @Override
         public void onClick(View v) {
             singleDialog.dismiss();
@@ -208,6 +229,10 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
 
     @Override
     protected void onDestroy() {
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
+            compositeDisposable.clear();
+        }
         if (loadingDialog != null) {
             loadingDialog.dismiss();
             loadingDialog = null;
@@ -228,6 +253,12 @@ public abstract class BaseActivity extends CommActivity implements BaseViewInfer
 
     protected <T> ObservableTransformer<T, T> timer() {
         return observable -> observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    protected void addDisposable(Disposable disposable) {
+        if (compositeDisposable != null) {
+            compositeDisposable.add(disposable);
+        }
     }
 }

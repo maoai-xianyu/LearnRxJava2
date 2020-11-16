@@ -1,7 +1,7 @@
 package com.mao.cn.learnRxJava2.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mao.cn.learnRxJava2.R;
-import com.mao.cn.learnRxJava2.contants.ValueMaps;
+import com.mao.cn.learnRxJava2.contants.ValueMaps.ClickTime;
 import com.mao.cn.learnRxJava2.utils.tools.ListU;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 import com.mao.cn.learnRxJava2.utils.tools.StringU;
@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 
 /**
  * author:  zhangkun .
@@ -44,6 +46,7 @@ public class RxJavaLearnAdapter extends RecyclerView.Adapter<RxJavaLearnAdapter.
         return new ViewHolder(view);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -57,9 +60,8 @@ public class RxJavaLearnAdapter extends RecyclerView.Adapter<RxJavaLearnAdapter.
             holder.tvShow.setText(str);
         }
 
-
-        RxView.clicks(holder.tvShow).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit
-                .MILLISECONDS).subscribe(aVoid -> {
+        Disposable subscribe = RxView.clicks(holder.tvShow).throttleFirst(ClickTime.BREAK_TIME_MILLISECOND, TimeUnit
+            .MILLISECONDS).subscribe(aVoid -> {
             listener.showResult(str);
         }, throwable -> {
             LogU.e(throwable.getMessage());

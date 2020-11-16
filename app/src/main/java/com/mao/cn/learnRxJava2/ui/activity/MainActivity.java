@@ -24,6 +24,7 @@ import com.mao.cn.learnRxJava2.component.DaggerMainComponent;
 import com.mao.cn.learnRxJava2.contants.ValueMaps;
 import com.mao.cn.learnRxJava2.modules.MainModule;
 import com.mao.cn.learnRxJava2.roundcornerprogressbar.RoundCornerProgressBar;
+import com.mao.cn.learnRxJava2.ui.activity.rxjava.ObservableSubscribe;
 import com.mao.cn.learnRxJava2.ui.commons.BaseActivity;
 import com.mao.cn.learnRxJava2.ui.features.IMain;
 import com.mao.cn.learnRxJava2.ui.presenter.MainPresenter;
@@ -80,6 +81,44 @@ public class MainActivity extends BaseActivity implements IMain {
         rcpb.enableAnimation();
         rcpb.setRadius((int) dp2px(15));
         rcpb.setProgressColors(getResources().getIntArray(R.array.movie_progress_gradient));
+
+
+        initRx();
+    }
+
+
+    private void initRx() {
+
+        // onSubscribe  = ObservableSubscribe
+        com.mao.cn.learnRxJava2.ui.activity.rxjava.Observable.create(new ObservableSubscribe<String>() {
+            @Override
+            public void subscribe(com.mao.cn.learnRxJava2.ui.activity.rxjava.Observer<String> stringObserver) {
+
+                // stringObserver  ==  Observer 值
+                stringObserver.onNext("1111");
+                stringObserver.onNext("222");
+                stringObserver.onNext("3333");
+                stringObserver.onNext("444");
+                stringObserver.onComplete();
+            }
+        }).subscribe(new com.mao.cn.learnRxJava2.ui.activity.rxjava.Observer<String>() {
+            @Override
+            public void onNext(String s) {
+
+                LogU.d("onNext  " + s);
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("onComplete  ");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogU.d("onError  " + e.toString());
+            }
+        });
     }
 
     float dp2px(float dp) {

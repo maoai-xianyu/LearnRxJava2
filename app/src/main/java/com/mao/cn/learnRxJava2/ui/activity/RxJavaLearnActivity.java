@@ -9,9 +9,8 @@
 // +----------------------------------------------------------------------
 package com.mao.cn.learnRxJava2.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -515,6 +516,7 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
         RxJavaMethodFunc.rxjava_map(ivShow);
     }
 
+    @SuppressLint("CheckResult")
     private void rxjava_startFun() {
         String[] list = ResourceU.getAssetsFileNames("images_cover");
         List<File> files = new ArrayList<>();
@@ -670,6 +672,8 @@ public class RxJavaLearnActivity extends BaseActivity implements IRxJavaLearn {
                 startActivity(MainActivity.class, true);
             }
         });
+
+
 
     }
 
