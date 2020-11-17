@@ -1,5 +1,6 @@
 package com.mao.cn.learnRxJava2.ui.funcitonMethod;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -120,6 +121,7 @@ public class RxJavaMethodFunc {
      * observeOn() 指定的是它之后的操作所在的线程。
      * 因此如果有多次切换线程的需求，只要在每个想要切换线程的位置调用一次 observeOn() 即可
      */
+    @SuppressLint("CheckResult")
     public static void changeThreadMore() {
         Observable.just(1, 2, 3, 4)
                 .subscribeOn(Schedulers.newThread())
@@ -140,6 +142,7 @@ public class RxJavaMethodFunc {
      * 默认情况下， doOnSubscribe() 执行在 subscribe() 发生的线程；
      * 而如果在 doOnSubscribe() 之后有 subscribeOn() 的话，它将执行在离它最近的 subscribeOn() 所指定的线程。
      */
+    @SuppressLint("CheckResult")
     public static void changeThreadMain(SimpleDraweeView svImage) {
         Observable.just(1, 2, 3, 4)
                 .subscribeOn(Schedulers.io())
@@ -153,6 +156,7 @@ public class RxJavaMethodFunc {
     /**
      * 线程的转换
      */
+    @SuppressLint("CheckResult")
     public static void rxjavaSchedule() {
         // --------线程的转换  create
         // 观察者
@@ -233,6 +237,7 @@ public class RxJavaMethodFunc {
      *
      * @param imageView
      */
+    @SuppressLint("CheckResult")
     public static void rxjava_map(ImageView imageView) {
         //map(): 事件对象的直接变换
         Observable.just("images_cover/image_name_sign.png")
@@ -268,6 +273,7 @@ public class RxJavaMethodFunc {
      * <p>
      * 数据可能会交叉
      */
+    @SuppressLint("CheckResult")
     public static void rxjava_flatmap() {
         Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
@@ -282,6 +288,7 @@ public class RxJavaMethodFunc {
     /**
      * 网络请求中，如果数据有顺序问题，那么就不能使用flatMap
      */
+    @SuppressLint("CheckResult")
     public static void rxjava_flatmapNew() {
         Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .flatMap(new Function<Student, ObservableSource<StudentCourse>>() {
@@ -296,6 +303,7 @@ public class RxJavaMethodFunc {
     /**
      * concatMap()解决了flatMap()的交叉问题，它能够把发射的值连续在一起
      */
+    @SuppressLint("CheckResult")
     public static void rxjava_concatMap() {
         Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .concatMap(new Function<Student, ObservableSource<StudentCourse>>() {
@@ -310,6 +318,7 @@ public class RxJavaMethodFunc {
     /**
      * flatMapIterable()它转化的多个Observable是使用Iterable作为源数据的。
      */
+    @SuppressLint("CheckResult")
     public static void rxjava_FlatMapIterableMap() {
         Observable.fromIterable(InitDataMethodFunc.initStudentData())
                 .flatMapIterable(new Function<Student, Iterable<StudentCourse>>() {
@@ -878,7 +887,7 @@ public class RxJavaMethodFunc {
     public static void rxjava_create() {
 
         Observable.create((ObservableOnSubscribe<Integer>) observableEmitter -> {
-            observableEmitter.onNext(1);
+            /*observableEmitter.onNext(1);
             LogU.i(" Emitter " + 1);
             observableEmitter.onNext(2);
             LogU.i(" Emitter " + 2);
@@ -889,7 +898,8 @@ public class RxJavaMethodFunc {
             observableEmitter.onNext(4);
             LogU.i(" Emitter " + 4);
             observableEmitter.onNext(5);
-            LogU.i(" Emitter " + 5);
+            LogU.i(" Emitter " + 5);*/
+            observableEmitter.onNext(null);
         }).subscribe(new Observer<Integer>() {
 
             private Disposable mDisposable;

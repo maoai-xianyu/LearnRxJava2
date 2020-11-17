@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LearnRxJava2.iml" filepath="$PROJECT_DIR$/LearnRxJava2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LearnRxJava2.iml" filepath="$PROJECT_DIR$/.idea/modules/LearnRxJava2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/LearnRxJava2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/LearnRxJava2.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/assets/LearnRxJava2.assets.iml" filepath="$PROJECT_DIR$/.idea/modules/assets/LearnRxJava2.assets.iml" />
     </modules>
