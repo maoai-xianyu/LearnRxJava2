@@ -10,6 +10,7 @@
 package com.mao.cn.learnRxJava2.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -53,6 +54,8 @@ public class MainActivity extends BaseActivity implements IMain {
     Button btnDescNet;
     @BindView(R.id.btn_desc_rxjava)
     Button btnDescRxjava;
+    @BindView(R.id.btn_desc_rxjava_1)
+    Button btnDescRxjava1;
     @BindView(R.id.btn_desc_image)
     Button btnDescImage;
     @BindView(R.id.rcpb)
@@ -126,6 +129,7 @@ public class MainActivity extends BaseActivity implements IMain {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void setListener() {
 
@@ -139,6 +143,13 @@ public class MainActivity extends BaseActivity implements IMain {
         RxView.clicks(btnDescRxjava).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit
             .MILLISECONDS).subscribe(aVoid -> {
             startActivity(RxJavaLearnActivity.class);
+        }, throwable -> {
+            LogU.e(throwable.getMessage());
+        });
+
+        RxView.clicks(btnDescRxjava1).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit
+            .MILLISECONDS).subscribe(aVoid -> {
+            startActivity(RxJavaLearnDetailActivity.class);
         }, throwable -> {
             LogU.e(throwable.getMessage());
         });
@@ -163,6 +174,7 @@ public class MainActivity extends BaseActivity implements IMain {
     /**
      * 获取需要操作日历的权限
      */
+    @SuppressLint("CheckResult")
     private void requestPermission() {
 
         new RxPermissions(MainActivity.this)

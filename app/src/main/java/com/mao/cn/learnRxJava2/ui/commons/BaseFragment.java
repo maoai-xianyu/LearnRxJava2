@@ -1,7 +1,6 @@
 package com.mao.cn.learnRxJava2.ui.commons;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.widget.Toast;
 
 import com.mao.cn.learnRxJava2.LearnRxJava2Application;
@@ -16,11 +15,12 @@ import com.mao.cn.learnRxJava2.wedget.dialog.LoadingDialog;
 
 import java.lang.reflect.Field;
 
+import androidx.fragment.app.Fragment;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.android.schedulers.*;
+import retrofit2.HttpException;
 
-import retrofit2.adapter.rxjava.HttpException;
 
 public abstract class BaseFragment extends CommFragment implements BaseViewInferface {
 

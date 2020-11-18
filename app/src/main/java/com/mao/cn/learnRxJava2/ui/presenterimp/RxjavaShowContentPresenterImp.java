@@ -37,11 +37,13 @@ import io.reactivex.schedulers.Schedulers;
  * AUTHOR : Xabad
  */
 public class RxjavaShowContentPresenterImp extends BasePresenterImp implements RxjavaShowContentPresenter {
+
     RxjavaShowContentInteractor interactor;
     IRxjavaShowContent viewInterface;
     private CompositeDisposable comDisposable;
 
-    public RxjavaShowContentPresenterImp(IRxjavaShowContent viewInterface, RxjavaShowContentInteractor rxjavaShowContentInteractor) {
+    public RxjavaShowContentPresenterImp(IRxjavaShowContent viewInterface,
+        RxjavaShowContentInteractor rxjavaShowContentInteractor) {
         super();
         this.viewInterface = viewInterface;
         this.interactor = rxjavaShowContentInteractor;
@@ -55,12 +57,15 @@ public class RxjavaShowContentPresenterImp extends BasePresenterImp implements R
             return;
         }
         viewInterface.showLoadingDialog("");
-        Observable<String> observable = interactor.getMovieTop(start, count).onTerminateDetach().flatMap(new Function<String, ObservableSource<String>>() {
-            @Override
-            public ObservableSource<String> apply(@NonNull String s) throws Exception {
-                return Observable.just(s);
-            }
-        }).compose(applyIoSchedulers());
+        Observable<String> observable = interactor.getMovieTop(start, count)
+            .onTerminateDetach()
+            .flatMap(new Function<String, ObservableSource<String>>() {
+                @Override
+                public ObservableSource<String> apply(@NonNull String s) throws Exception {
+                    return Observable.just(s);
+                }
+            }).compose(applyIoSchedulers());
+
         Disposable disposable = observable.subscribe(s -> {
             viewInterface.hideLoadingDialog();
             Movie convert = null;
@@ -92,37 +97,37 @@ public class RxjavaShowContentPresenterImp extends BasePresenterImp implements R
         }
         viewInterface.showLoadingDialog("");
         interactor.getMovieTopSingle(start, count)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new SingleObserver<String>() {
+                @Override
+                public void onSubscribe(Disposable d) {
 
+                }
+
+                @Override
+                public void onSuccess(String s) {
+                    viewInterface.hideLoadingDialog();
+                    Movie convert = null;
+                    try {
+                        convert = GsonU.convert(s, Movie.class);
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
                     }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        viewInterface.hideLoadingDialog();
-                        Movie convert = null;
-                        try {
-                            convert = GsonU.convert(s, Movie.class);
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
-                        if (convert != null && StringU.isNotEmpty(convert.getTitle()) && ListU.notEmpty(convert.getSubjects())) {
-                            viewInterface.showTopMovie(convert.getSubjects(), convert.getTitle());
-                        } else {
-                            viewInterface.showTopMovie(null, "");
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        viewInterface.hideLoadingDialog();
-                        viewInterface.interError(e);
+                    if (convert != null && StringU.isNotEmpty(convert.getTitle()) && ListU.notEmpty(convert.getSubjects())) {
+                        viewInterface.showTopMovie(convert.getSubjects(), convert.getTitle());
+                    } else {
                         viewInterface.showTopMovie(null, "");
                     }
-                });
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    viewInterface.hideLoadingDialog();
+                    viewInterface.interError(e);
+                    viewInterface.showTopMovie(null, "");
+                }
+            });
 
     }
 

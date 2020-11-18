@@ -10,7 +10,6 @@
         android:id="@+id/tv_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_header"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/d5"
         android:layout_marginTop="@dimen/d5"

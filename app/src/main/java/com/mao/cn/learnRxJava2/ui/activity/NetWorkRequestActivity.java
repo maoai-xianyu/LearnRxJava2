@@ -1,5 +1,6 @@
 package com.mao.cn.learnRxJava2.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +56,7 @@ public class NetWorkRequestActivity extends BaseActivity {
     }
 
 
+    @SuppressLint("CheckResult")
     @Override
     public void setListener() {
 

@@ -9,9 +9,8 @@
 // +----------------------------------------------------------------------
 package com.mao.cn.learnRxJava2.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -112,13 +113,11 @@ public class RxjavaLearnRxBingdingActivity extends BaseActivity implements IRxja
         rvData.setAdapter(rcStringAdapter);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void setListener() {
 
         RxView.clicks(ibHeaderBack).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit.MILLISECONDS)
-                .subscribe(aVoid -> finish(), throwable -> LogU.e(throwable.getMessage()));
-
-        RxView.longClicks(ibHeaderBack).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit.MILLISECONDS)
                 .subscribe(aVoid -> finish(), throwable -> LogU.e(throwable.getMessage()));
 
         RxAdapterView.itemClicks(lsData)

@@ -19,7 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
@@ -50,7 +50,7 @@ public class RestApiAdapter {
                     .client(client)
                     .addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return rxHttpsStringInstance;
@@ -71,7 +71,7 @@ public class RestApiAdapter {
                     .client(client)
                     .addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return sharedStringInstance;
@@ -94,7 +94,7 @@ public class RestApiAdapter {
                     .client(timeoutClient)
                     .addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return timeoutStringInstance;
@@ -115,11 +115,12 @@ public class RestApiAdapter {
                     .client(client)
                     .addConverterFactory(new StringConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return rxGsonInstance;
     }
+
 
 
     public static void clean() {

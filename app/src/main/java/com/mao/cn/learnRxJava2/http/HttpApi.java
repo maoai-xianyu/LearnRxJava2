@@ -11,6 +11,7 @@ package com.mao.cn.learnRxJava2.http;
 
 import com.mao.cn.learnRxJava2.model.Movie;
 import com.mao.cn.learnRxJava2.model.MovieDetail;
+import com.mao.cn.learnRxJava2.model.User;
 import com.mao.cn.learnRxJava2.utils.config.Config;
 
 import io.reactivex.Observable;
@@ -175,6 +176,11 @@ public interface HttpApi {
     @GET("v2/movie/subject/1764796")
     @Headers(Config.HEADER_MAO)
     Observable<String> getTodayMovie(@Query("start") int start, @Query("count") int count, @Query("access_token") String access_token);
+
+
+    @GET("https://api.github.com/users/{login}")
+    @Headers(Config.HEADER_MAO)
+    Observable<User> getUser(@Path("login") String login);
 
 
 }

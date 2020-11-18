@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c_FFFFFF"
     tools:context="com.mao.cn.learnRxJava2.ui.activity.MainActivity">
-
-    <include
-        android:id="@+id/rl_header"
-        layout="@layout/include_header" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_header">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/d10">
+            android:paddingBottom="@dimen/d10"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_desc_net"
@@ -46,19 +44,35 @@
                 android:layout_below="@+id/btn_desc_rxjava"
                 android:text="image图片" />
 
+
             <com.mao.cn.learnRxJava2.roundcornerprogressbar.RoundCornerProgressBar
                 android:id="@+id/rcpb"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
-                android:layout_below="@+id/btn_desc_image"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
+                android:layout_below="@+id/btn_desc_image"
                 app:rcBackgroundColor="@color/mine_vip_progress_default"
                 app:rcMax="100"
                 app:rcProgressColors="@array/movie_progress_gradient"
-                app:rcRadius="15dp"/>
+                app:rcRadius="15dp" />
 
-        </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_desc_rxjava_1"
+                style="@style/home_main_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_desc_net"
+                android:text="RxJava 再次" />
+
+
+        </LinearLayout>
     </ScrollView>
+
+    <include
+        android:id="@+id/rl_header"
+        layout="@layout/include_header" />
 
 </RelativeLayout>

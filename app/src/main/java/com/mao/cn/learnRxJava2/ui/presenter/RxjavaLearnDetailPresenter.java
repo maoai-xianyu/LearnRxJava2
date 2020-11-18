@@ -10,8 +10,10 @@
 package com.mao.cn.learnRxJava2.ui.presenter;
 
 /**
-* DESC   :
-* AUTHOR : Xabad
-*/
-public interface RxjavaLearnDetailPresenter{
+ * DESC   :
+ * AUTHOR : Xabad
+ */
+public interface RxjavaLearnDetailPresenter {
+
+    void getUser(String name);
 }

@@ -9,9 +9,8 @@
 // +----------------------------------------------------------------------
 package com.mao.cn.learnRxJava2.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -35,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -69,11 +70,11 @@ public class OkhttpShowContentActivity extends BaseActivity implements IOkhttpSh
     public void initView() {
         ibHeaderBack.setVisibility(View.VISIBLE);
         movieTopAdapter = new MovieTopAdapter(this);
-//        presenter.getMovieTopMyOkHttp(0, 10);
         presenter.getMovieTop(0, 10);
 
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void setListener() {
         RxView.clicks(ibHeaderBack).throttleFirst(ValueMaps.ClickTime.BREAK_TIME_MILLISECOND, TimeUnit
