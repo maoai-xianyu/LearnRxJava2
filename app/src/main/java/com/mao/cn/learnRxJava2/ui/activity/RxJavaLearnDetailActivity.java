@@ -70,7 +70,9 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
     @Override
     public void initView() {
         ibHeaderBack.setVisibility(View.VISIBLE);
-        presenter.getUser("maoai-xianyu");
+        //presenter.getUser("maoai-xianyu");
+        //presenter.getT();
+        presenter.getIntraval();
         test();
     }
 
@@ -124,5 +126,11 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
             .appComponent(appComponent)
             .rxjavaLearnDetailModule(new RxjavaLearnDetailModule(this))
             .build().inject(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.clear();
     }
 }

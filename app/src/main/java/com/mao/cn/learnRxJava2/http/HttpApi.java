@@ -11,6 +11,7 @@ package com.mao.cn.learnRxJava2.http;
 
 import com.mao.cn.learnRxJava2.model.Movie;
 import com.mao.cn.learnRxJava2.model.MovieDetail;
+import com.mao.cn.learnRxJava2.model.Translation;
 import com.mao.cn.learnRxJava2.model.User;
 import com.mao.cn.learnRxJava2.utils.config.Config;
 
@@ -181,6 +182,10 @@ public interface HttpApi {
     @GET("https://api.github.com/users/{login}")
     @Headers(Config.HEADER_MAO)
     Observable<User> getUser(@Path("login") String login);
+
+
+    @GET("ajax.php?a=fy&f=auto&t=auto&w=hi%20world")
+    Observable<Translation> getCall();
 
 
 }

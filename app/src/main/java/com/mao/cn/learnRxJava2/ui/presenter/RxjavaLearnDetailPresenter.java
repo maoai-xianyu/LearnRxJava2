@@ -16,4 +16,10 @@ package com.mao.cn.learnRxJava2.ui.presenter;
 public interface RxjavaLearnDetailPresenter {
 
     void getUser(String name);
+
+    void getT();
+
+    void getIntraval();
+
+    void clear();
 }
