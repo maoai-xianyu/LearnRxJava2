@@ -12,6 +12,7 @@ package com.mao.cn.learnRxJava2.http;
 import com.mao.cn.learnRxJava2.model.Movie;
 import com.mao.cn.learnRxJava2.model.MovieDetail;
 import com.mao.cn.learnRxJava2.model.Translation;
+import com.mao.cn.learnRxJava2.model.TranslationNew;
 import com.mao.cn.learnRxJava2.model.User;
 import com.mao.cn.learnRxJava2.utils.config.Config;
 
@@ -186,6 +187,14 @@ public interface HttpApi {
 
     @GET("ajax.php?a=fy&f=auto&t=auto&w=hi%20world")
     Observable<Translation> getCall();
+
+    // 网络请求1
+    @GET("ajax.php?a=fy&f=auto&t=auto&w=hi%20register")
+    Observable<Translation> getCall1();
+
+    // 网络请求2
+    @GET("ajax.php?a=fy&f=auto&t=auto&w=hi%20login")
+    Observable<TranslationNew> getCall2();
 
 
 }

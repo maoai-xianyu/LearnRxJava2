@@ -25,5 +25,7 @@ public interface RxjavaLearnDetailPresenter {
 
     void requestDataByNet();
 
+    void requestDouble();
+
     void clear();
 }

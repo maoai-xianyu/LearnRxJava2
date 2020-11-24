@@ -16,6 +16,6 @@
         android:layout_below="@id/rl_header"
         android:layout_centerHorizontal="true"
         android:textColor="@color/c_000000"
-        tools:text="显示" />
+        android:text="显示" />
 
 </RelativeLayout>

@@ -75,7 +75,7 @@ public class LoadingActivity extends BaseActivity implements ILoading {
     public void initView() {
 
         compositeDisposable = new CompositeDisposable();
-        subscribe = Observable.interval(5, TimeUnit.SECONDS).compose(timer()).subscribe(new Consumer<Long>() {
+        subscribe = Observable.interval(2, TimeUnit.SECONDS).compose(timer()).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long aLong) throws Exception {
                 LogU.i("  aLong  " + aLong);

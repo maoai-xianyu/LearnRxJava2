@@ -13,6 +13,7 @@ import com.mao.cn.learnRxJava2.R;
 import com.mao.cn.learnRxJava2.http.HttpApi;
 import com.mao.cn.learnRxJava2.interactors.RxjavaLearnDetailInteractor;
 import com.mao.cn.learnRxJava2.model.Translation;
+import com.mao.cn.learnRxJava2.model.TranslationNew;
 import com.mao.cn.learnRxJava2.model.User;
 import com.mao.cn.learnRxJava2.ui.commons.BasePresenterImp;
 import com.mao.cn.learnRxJava2.ui.features.IRxjavaLearnDetail;
@@ -61,6 +62,57 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
         this.compositeDisposable = new CompositeDisposable();
     }
 
+
+    @Override
+    public void requestDouble() {
+
+        if (!NetworkUtils.isConnected(context)) {
+            viewInterface.onTip(context.getString(R.string.no_connect_net));
+            return;
+        }
+
+        interactor.getCall1().compose(applyIoSchedulers())
+            .doOnNext(new Consumer<Translation>() {
+                @Override
+                public void accept(Translation translation) throws Exception {
+                    LogU.d(" 第一网络请求回来");
+                    translation.show();
+                }
+            }).observeOn(Schedulers.io())
+            .flatMap(new Function<Translation, ObservableSource<TranslationNew>>() {
+                @Override
+                public ObservableSource<TranslationNew> apply(@NonNull Translation translation) throws Exception {
+                    return interactor.getCall2();
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<TranslationNew>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    if (compositeDisposable != null) {
+                        compositeDisposable.add(d);
+                    }
+
+                }
+
+                @Override
+                public void onNext(@NonNull TranslationNew translationNew) {
+                    LogU.d(" 第二次网络请求回来，成功");
+                    translationNew.show();
+
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    LogU.e(" 第二次网络请求回来, 失败 "+ e.toString());
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+
+    }
 
     @Override
     public void runIntraval(String name) {
@@ -205,7 +257,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
                 @Override
                 public void onNext(@NonNull Long value) {
-                    // LogU.d(" 数据" + value);
+                    LogU.d(" 数据" + value);
 
                 }
 
@@ -487,6 +539,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
             });
 
     }
+
 
     @Override
     public void clear() {
