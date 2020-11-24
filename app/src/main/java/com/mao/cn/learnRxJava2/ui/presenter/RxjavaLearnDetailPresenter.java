@@ -15,11 +15,15 @@ package com.mao.cn.learnRxJava2.ui.presenter;
  */
 public interface RxjavaLearnDetailPresenter {
 
+    void runIntraval(String name);
+
     void getUser(String name);
 
-    void getT();
+    void getRepeatWhen();
 
     void getIntraval();
+
+    void requestDataByNet();
 
     void clear();
 }

@@ -50,6 +50,8 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
     private int i = 0;
 
     private CompositeDisposable compositeDisposable;
+    private Disposable mDisposable;
+    private long count = 0;
 
     public RxjavaLearnDetailPresenterImp(IRxjavaLearnDetail viewInterface,
         RxjavaLearnDetailInteractor rxjavaLearnDetailInteractor) {
@@ -57,6 +59,95 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
         this.viewInterface = viewInterface;
         this.interactor = rxjavaLearnDetailInteractor;
         this.compositeDisposable = new CompositeDisposable();
+    }
+
+
+    @Override
+    public void runIntraval(String name) {
+        if (!NetworkUtils.isConnected(context)) {
+            viewInterface.onTip(context.getString(R.string.no_connect_net));
+            return;
+        }
+
+        Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://fy.iciba.com/") // 设置 网络请求 Url
+            .addConverterFactory(GsonConverterFactory.create()) //设置使用Gson解析(记得加入依赖)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) // 支持RxJava
+            .build();
+
+        // b. 创建 网络请求接口 的实例
+        HttpApi request = retrofit.create(HttpApi.class);
+
+        // c. 采用Observable<...>形式 对 网络请求 进行封装
+        Observable<Translation> observable = request.getCall();
+
+        observable.repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
+
+                return objectObservable.delay(5000, TimeUnit.MILLISECONDS);
+            }
+        }).compose(applyIoSchedulers()).subscribe(new Observer<Translation>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                if (compositeDisposable != null) {
+                    compositeDisposable.add(d);
+                }
+
+            }
+
+            @Override
+            public void onNext(@NonNull Translation user) {
+                user.show();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                LogU.e(e.toString());
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        /*HttpApi httpApiHuihub = getHttpApiHuihub();
+
+        Observable<User> user = httpApiHuihub.getUser(name);
+        user.repeat()
+            .flatMap(new Function<User, ObservableSource<User>>() {
+                @Override
+                public ObservableSource<User> apply(@NonNull User user) throws Exception {
+                    return Observable.just(user).delay(2000, TimeUnit.MILLISECONDS);
+                }
+            })
+            .compose(applyIoSchedulers())
+            .subscribe(new Observer<User>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    if (compositeDisposable != null) {
+                        compositeDisposable.add(d);
+                    }
+
+                }
+
+                @Override
+                public void onNext(@NonNull User user) {
+                    LogU.d(" user " + user.getLogin());
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });*/
     }
 
     @Override
@@ -72,18 +163,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                 public void accept(Long integer) throws Exception {
                     LogU.d("第 " + integer + " 次轮询");
 
-                    Retrofit retrofit = new Retrofit.Builder()
-                        .client(new OkHttpClient.Builder().addInterceptor(chain -> {
-                            Response proceed = chain.proceed(chain.request());
-                            LogU.d("request: " + proceed.code());
-                            return proceed;
-                        }).build())
-                        .baseUrl("https://api.github.com/") // 设置 网络请求 Url
-                        .addConverterFactory(GsonConverterFactory.create()) //设置使用Gson解析(记得加入依赖)
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) // 支持RxJava
-                        .build();
-
-                    HttpApi httpApi = retrofit.create(HttpApi.class);
+                    HttpApi httpApi = getHttpApiHuihub();
                     Observable<User> observable = httpApi.getUser(name);
                     observable.compose(applyIoSchedulers())
                         .subscribe(new Observer<User>() {
@@ -140,6 +220,21 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                 }
             });
 
+    }
+
+    private HttpApi getHttpApiHuihub() {
+        Retrofit retrofit = new Retrofit.Builder()
+            .client(new OkHttpClient.Builder().addInterceptor(chain -> {
+                Response proceed = chain.proceed(chain.request());
+                LogU.d("request: " + proceed.code());
+                return proceed;
+            }).build())
+            .baseUrl("https://api.github.com/") // 设置 网络请求 Url
+            .addConverterFactory(GsonConverterFactory.create()) //设置使用Gson解析(记得加入依赖)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) // 支持RxJava
+            .build();
+
+        return retrofit.create(HttpApi.class);
     }
 
     @Override
@@ -240,7 +335,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
     }
 
     @Override
-    public void getT() {
+    public void getRepeatWhen() {
         if (!NetworkUtils.isConnected(context)) {
             viewInterface.onTip(context.getString(R.string.no_connect_net));
             return;
@@ -316,8 +411,86 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
     }
 
     @Override
+    public void requestDataByNet() {
+        Observable.interval(0, 1, TimeUnit.SECONDS)//设置0延迟，每隔一秒发送一条数据
+            .take(20)//设置截取前20次
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(Disposable disposable) throws Exception {
+                    mDisposable = disposable;
+                }
+            })
+            .flatMap(new Function<Long, ObservableSource<User>>() {
+                @Override
+                public ObservableSource<User> apply(@NonNull Long aLong) throws Exception {
+                    count = aLong;
+                    HttpApi httpApi = getHttpApiHuihub();
+                    Observable<User> observable = httpApi.getUser("maoai-xianyu");
+                    observable.compose(applyIoSchedulers())
+                        .subscribe(new Observer<User>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                if (compositeDisposable != null) {
+                                    compositeDisposable.add(d);
+                                }
+                            }
+
+                            @Override
+                            public void onNext(@NonNull User user) {
+                                String username = user.getLogin();
+                                LogU.d("username" + username);
+
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+                    return observable;
+                }
+            })
+            .compose(applyIoSchedulers())
+            .subscribe(new Observer<User>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    if (compositeDisposable != null) {
+                        compositeDisposable.add(d);
+                    }
+                }
+
+                @Override
+                public void onNext(@NonNull User user) {
+                    if (count == 13) {//模拟获取到该字段数据
+                        mDisposable.dispose();
+                        LogU.d(" 取消 count 不发射");
+                    }
+                    LogU.d(" onNext count " + count + " user" + user.getLogin());
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    LogU.e("eonError" + e.toString());
+
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.e("onComplete");
+                }
+
+            });
+
+    }
+
+    @Override
     public void clear() {
-        if (compositeDisposable != null && !compositeDisposable.isDisposed()){
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             LogU.i("  compositeDisposable clear");
             compositeDisposable.dispose();
             compositeDisposable.clear();

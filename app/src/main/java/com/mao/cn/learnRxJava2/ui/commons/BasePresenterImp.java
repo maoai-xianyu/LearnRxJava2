@@ -32,4 +32,9 @@ public abstract class BasePresenterImp implements BasePresenter {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    protected <T> ObservableTransformer<T, T> timer() {
+        return observable -> observable.subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }
