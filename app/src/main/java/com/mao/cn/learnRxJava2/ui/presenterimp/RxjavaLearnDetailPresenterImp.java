@@ -23,13 +23,18 @@ import com.mao.cn.learnRxJava2.utils.tools.LogU;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Notification;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -103,7 +108,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    LogU.e(" 第二次网络请求回来, 失败 "+ e.toString());
+                    LogU.e(" 第二次网络请求回来, 失败 " + e.toString());
                 }
 
                 @Override
@@ -540,6 +545,267 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
     }
 
+    @Override
+    public void zip() {
+
+        // 创建第1个被观察者
+        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                LogU.d("被观察者1发送了事件1");
+                emitter.onNext(1);
+                // 为了方便展示效果，所以在发送事件后加入2s的延迟
+
+                LogU.d("被观察者1发送了事件2");
+                emitter.onNext(2);
+
+                LogU.d("被观察者1发送了事件3");
+                emitter.onNext(3);
+
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io()); // 设置被观察者1在工作线程1中工作
+
+        // 创建第2个被观察者
+        Observable<String> observable2 = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                LogU.d("被观察者2发送了事件A");
+                emitter.onNext("A");
+
+                LogU.d("被观察者2发送了事件B");
+                emitter.onNext("B");
+
+                LogU.d("被观察者2发送了事件C");
+                emitter.onNext("C");
+
+                LogU.d("被观察者2发送了事件D");
+                emitter.onNext("D");
+
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread());// 设置被观察者2在工作线程2中工作
+        // 假设不作线程控制，则该两个被观察者会在同一个线程中工作，即发送事件存在先后顺序，而不是同时发送
+
+        // 使用zip变换操作符进行事件合并
+        // 注：创建BiFunction对象传入的第3个参数 = 合并后数据的数据类型
+        Observable.zip(observable1, observable2, new BiFunction<Integer, String, String>() {
+            @Override
+            public String apply(Integer integer, String string) throws Exception {
+                return integer + string;
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                if (compositeDisposable != null) {
+                    compositeDisposable.add(d);
+                }
+                LogU.d("onSubscribe");
+            }
+
+            @Override
+            public void onNext(String value) {
+                LogU.d("最终接收到的事件 =  " + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogU.d("onError" + e.toString());
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("onComplete");
+            }
+        });
+    }
+
+    @Override
+    public void delayTimer() {
+
+    }
+
+    @Override
+    public void doxx() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onNext(3);
+                e.onError(new Throwable("发生错误了"));
+            }
+        })// 1. 当Observable每发送1次数据事件就会调用1次
+            .doOnEach(new Consumer<Notification<Integer>>() {
+                @Override
+                public void accept(Notification<Integer> integerNotification) throws Exception {
+                    LogU.d("doOnEach: " + integerNotification.getValue());
+                }
+            })
+            // 2. 执行Next事件前调用
+            .doOnNext(new Consumer<Integer>() {
+                @Override
+                public void accept(Integer integer) throws Exception {
+                    LogU.d("doOnNext: " + integer);
+                }
+            })
+            // 3. 执行Next事件后调用
+            .doAfterNext(new Consumer<Integer>() {
+                @Override
+                public void accept(Integer integer) throws Exception {
+                    LogU.d("doAfterNext: " + integer);
+                }
+            })
+            // 4. Observable正常发送事件完毕后调用
+            .doOnComplete(new Action() {
+                @Override
+                public void run() throws Exception {
+                    LogU.d("doOnComplete: ");
+                }
+            })
+            // 5. Observable发送错误事件时调用
+            .doOnError(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+                    LogU.e("doOnError: " + throwable.getMessage());
+                }
+            })
+            // 6. 观察者订阅时调用
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    LogU.d("doOnSubscribe: ");
+                }
+            })
+            // 7. Observable发送事件完毕后调用，无论正常发送完毕 / 异常终止
+            .doAfterTerminate(new Action() {
+                @Override
+                public void run() throws Exception {
+                    LogU.e("doAfterTerminate: ");
+                }
+            })
+            // 8. 最后执行
+            .doFinally(new Action() {
+                @Override
+                public void run() throws Exception {
+                    LogU.e("doFinally: ");
+                }
+            })
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+    }
+
+    @Override
+    public void onErrorReturn() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        }).onErrorReturn(new Function<Throwable, Integer>() {
+            @Override
+            public Integer apply(@NonNull Throwable throwable) throws Exception {
+                // 捕捉错误异常
+                LogU.d("在onErrorReturn处理了错误: " + throwable.toString());
+
+                return 666;
+                // 发生错误事件后，发送一个"666"事件，最终正常结束
+            }
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                LogU.d("接收到了事件" + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogU.d("对Error事件作出响应");
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("对Complete事件作出响应");
+            }
+        });
+    }
+
+    @Override
+    public void onErrorResumeNext() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                //e.onError(new Throwable("发生错误了"));
+            }
+        })/*.onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Integer>>() {
+            @Override
+            public ObservableSource<? extends Integer> apply(@NonNull Throwable throwable) {
+                // 1. 捕捉错误异常
+                LogU.e("在onErrorReturn处理了错误: " + throwable.toString());
+
+                // 2. 发生错误事件后，发送一个新的被观察者 & 发送事件序列
+                return Observable.just(11, 22);
+            }
+        })*/
+            .onExceptionResumeNext(new Observable<Integer>() {
+            @Override
+            protected void subscribeActual(Observer<? super Integer> observer) {
+                LogU.e("发生异常后，发送其他值，onExceptionResumeNext 只能捕获Exception 异常，如果是Throwable,直接到观察者的onError");
+                observer.onNext(11);
+                observer.onNext(22);
+                observer.onComplete();
+            }
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                LogU.d("接收到了事件" + value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogU.e("对Error事件作出响应");
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("对Complete事件作出响应");
+            }
+        });
+    }
 
     @Override
     public void clear() {

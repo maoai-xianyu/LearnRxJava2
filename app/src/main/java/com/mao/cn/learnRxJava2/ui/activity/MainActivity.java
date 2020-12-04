@@ -25,7 +25,9 @@ import com.mao.cn.learnRxJava2.component.DaggerMainComponent;
 import com.mao.cn.learnRxJava2.contants.ValueMaps;
 import com.mao.cn.learnRxJava2.modules.MainModule;
 import com.mao.cn.learnRxJava2.roundcornerprogressbar.RoundCornerProgressBar;
+import com.mao.cn.learnRxJava2.ui.activity.rxjava.Observable;
 import com.mao.cn.learnRxJava2.ui.activity.rxjava.ObservableSubscribe;
+import com.mao.cn.learnRxJava2.ui.activity.rxjava.Observer;
 import com.mao.cn.learnRxJava2.ui.commons.BaseActivity;
 import com.mao.cn.learnRxJava2.ui.features.IMain;
 import com.mao.cn.learnRxJava2.ui.presenter.MainPresenter;
@@ -93,9 +95,9 @@ public class MainActivity extends BaseActivity implements IMain {
     private void initRx() {
 
         // onSubscribe  = ObservableSubscribe
-        com.mao.cn.learnRxJava2.ui.activity.rxjava.Observable.create(new ObservableSubscribe<String>() {
+        Observable.create(new ObservableSubscribe<String>() {
             @Override
-            public void subscribe(com.mao.cn.learnRxJava2.ui.activity.rxjava.Observer<String> stringObserver) {
+            public void subscribe(Observer<String> stringObserver) {
 
                 // stringObserver  ==  Observer 值
                 stringObserver.onNext("1111");

@@ -27,5 +27,15 @@ public interface RxjavaLearnDetailPresenter {
 
     void requestDouble();
 
+    void zip();
+
+    void delayTimer();
+
+    void doxx();
+
+    void onErrorReturn();
+
+    void onErrorResumeNext();
+
     void clear();
 }

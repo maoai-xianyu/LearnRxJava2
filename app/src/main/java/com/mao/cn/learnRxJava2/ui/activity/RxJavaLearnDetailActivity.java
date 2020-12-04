@@ -72,12 +72,16 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
         ibHeaderBack.setVisibility(View.VISIBLE);
         //presenter.getUser("maoai-xianyu");
         //presenter.runIntraval("maoai-xianyu");
-        presenter.requestDouble();
+        //presenter.requestDouble();
         //presenter.getRepeatWhen();
         //presenter.getT();
         //presenter.getIntraval();
         //presenter.requestDataByNet();
         //test();
+        //presenter.zip();
+        //presenter.doxx();
+        //presenter.onErrorReturn();
+        presenter.onErrorResumeNext();
     }
 
     private void test() {
