@@ -35,8 +35,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -777,14 +779,14 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
             }
         })*/
             .onExceptionResumeNext(new Observable<Integer>() {
-            @Override
-            protected void subscribeActual(Observer<? super Integer> observer) {
-                LogU.e("发生异常后，发送其他值，onExceptionResumeNext 只能捕获Exception 异常，如果是Throwable,直接到观察者的onError");
-                observer.onNext(11);
-                observer.onNext(22);
-                observer.onComplete();
-            }
-        }).subscribe(new Observer<Integer>() {
+                @Override
+                protected void subscribeActual(Observer<? super Integer> observer) {
+                    LogU.e("发生异常后，发送其他值，onExceptionResumeNext 只能捕获Exception 异常，如果是Throwable,直接到观察者的onError");
+                    observer.onNext(11);
+                    observer.onNext(22);
+                    observer.onComplete();
+                }
+            }).subscribe(new Observer<Integer>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -805,6 +807,278 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                 LogU.d("对Complete事件作出响应");
             }
         });
+    }
+
+    @Override
+    public void retry() {
+        //-- 1. retry（） -->
+        // 作用：出现错误时，让被观察者重新发送数据
+        // 注：若一直错误，则一直重新发送
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        }).retry() // 遇到错误时，让被观察者重新发射数据（若一直错误，则一直重新发送
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+
+        //2. retry（long time） -->
+        // 作用：出现错误时，让被观察者重新发送数据（具备重试次数限制
+        // 参数 = 重试次数
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        }).retry(3) // 设置重试次数 = 3次
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+
+        //3. retry（Predicate predicate）-- >
+        // 作用：出现错误后，判断是否需要重新发送数据（若需要重新发送& 持续遇到错误，则持续重试）
+        // 参数 = 判断逻辑
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        })
+            // 拦截错误后，判断是否需要重新发送请求
+            .retry(new Predicate<Throwable>() {
+                @Override
+                public boolean test(@NonNull Throwable throwable) throws Exception {
+                    // 捕获异常
+                    LogU.e("retry错误: " + throwable.toString());
+
+                    //返回false = 不重新重新发送数据 & 调用观察者的onError结束
+                    //返回true = 重新发送请求（若持续遇到错误，就持续重新发送）
+                    return false;
+                }
+            })
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+
+        //4. retry（new BiPredicate<Integer, Throwable>）-- >
+        // 作用：出现错误后，判断是否需要重新发送数据（若需要重新发送 & 持续遇到错误，则持续重试
+        // 参数 =  判断逻辑（传入当前重试次数 & 异常错误信息）
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        })// 拦截错误后，判断是否需要重新发送请求
+            .retry(new BiPredicate<Integer, Throwable>() {
+                @Override
+                public boolean test(@NonNull Integer integer, @NonNull Throwable throwable) throws Exception {
+                    // 捕获异常
+                    LogU.e("异常错误 =  " + throwable.toString());
+
+                    // 获取当前重试次数
+                    LogU.e("当前重试次数 =  " + integer);
+
+                    //返回false = 不重新重新发送数据 & 调用观察者的onError结束
+                    //返回true = 重新发送请求（若持续遇到错误，就持续重新发送）
+                    return false;
+                }
+            })
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+
+        //<--5. retry（long time, Predicate predicate）-- >
+        // 作用：出现错误后，判断是否需要重新发送数据（具备重试次数限制
+        // 参数 = 设置重试次数 & 判断逻辑
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        })
+            // 拦截错误后，判断是否需要重新发送请求
+            .retry(3, new Predicate<Throwable>() {
+                @Override
+                public boolean test(@NonNull Throwable throwable) throws Exception {
+                    // 捕获异常
+                    LogU.e("retry错误: " + throwable.toString());
+
+                    //返回false = 不重新重新发送数据 & 调用观察者的onError（）结束
+                    //返回true = 重新发送请求（最多重新发送3次）
+                    return true;
+                }
+            })
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+    }
+
+
+    @Override
+    public void retryWhen() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                e.onNext(2);
+                e.onError(new Exception("发生错误了"));
+                e.onNext(3);
+            }
+        })
+            // 遇到error事件才会回调
+            .retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+
+                @Override
+                public ObservableSource<?> apply(@NonNull Observable<Throwable> throwableObservable) throws Exception {
+                    // 参数Observable<Throwable>中的泛型 = 上游操作符抛出的异常，可通过该条件来判断异常的类型
+                    // 返回Observable<?> = 新的被观察者 Observable（任意类型）
+                    // 此处有两种情况：
+                    // 1. 若 新的被观察者 Observable发送的事件 = Error事件，那么 原始Observable则不重新发送事件：
+                    // 2. 若 新的被观察者 Observable发送的事件 = Next事件 ，那么原始的Observable则重新发送事件：
+                    return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                        @Override
+                        public ObservableSource<?> apply(@NonNull Throwable throwable) throws Exception {
+
+                            // 1. 若返回的Observable发送的事件 = Error事件，则原始的Observable不重新发送事件
+                            // 该异常错误信息可在观察者中的onError（）中获得
+                            return Observable.error(new Throwable("retryWhen终止啦"));
+
+                            // 2. 若返回的Observable发送的事件 = Next事件，则原始的Observable重新发送事件（若持续遇到错误，则持续重试）
+                            // return Observable.just(1);
+                        }
+                    });
+
+                }
+            })
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.e( "对Error事件作出响应" + e.toString());
+                    // 获取异常错误信息
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
     }
 
     @Override

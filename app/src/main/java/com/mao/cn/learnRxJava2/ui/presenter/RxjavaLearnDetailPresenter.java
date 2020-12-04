@@ -37,5 +37,9 @@ public interface RxjavaLearnDetailPresenter {
 
     void onErrorResumeNext();
 
+    void retry();
+
+    void retryWhen();
+
     void clear();
 }

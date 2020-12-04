@@ -81,7 +81,9 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
         //presenter.zip();
         //presenter.doxx();
         //presenter.onErrorReturn();
-        presenter.onErrorResumeNext();
+        //presenter.onErrorResumeNext();
+        //presenter.retry();
+        presenter.retryWhen();
     }
 
     private void test() {
