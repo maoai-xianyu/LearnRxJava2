@@ -21,6 +21,8 @@ import com.mao.cn.learnRxJava2.ui.presenter.RxjavaLearnDetailPresenter;
 import com.mao.cn.learnRxJava2.utils.network.NetworkUtils;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Notification;
@@ -39,6 +41,7 @@ import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -1100,7 +1103,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                         return Observable.empty();
                         // Observable.empty() = 发送Complete事件，但不会回调观察者的onComplete（）
 
-                         //return Observable.error(new Throwable("不再重新订阅事件"));
+                        //return Observable.error(new Throwable("不再重新订阅事件"));
                         // 返回Error事件 = 回调onError（）事件，并接收传过去的错误信息。
 
                         // 情况2：若新被观察者（Observable）返回其余事件，则重新订阅 & 发送原来的 Observable
@@ -1133,6 +1136,178 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                 }
 
             });
+    }
+
+    @Override
+    public void groupBy() {
+        Observable<GroupedObservable<Integer, Integer>> observable = Observable.concat(
+            Observable.range(1, 4), Observable.range(1, 6)).groupBy(integer -> integer);
+        Observable.concat(observable).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                LogU.d("integer" + integer);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        //Observable.range(2, 5).scan((i1, i2) -> i1 * i2).subscribe(i -> LogU.d((i + " ")));
+        Observable.range(2, 5).scan(3, (integer, integer2) -> {
+            LogU.d("integer " + integer);
+            LogU.d("integer2 " + integer2);
+            return integer * integer2;
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                LogU.d(integer + " ");
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        Observable.range(1, 10).buffer(3)
+            .subscribe(new Observer<List<Integer>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull List<Integer> integers) {
+                    LogU.d("buffer" + Arrays.toString(integers.toArray()));
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+
+        Observable.range(1, 10).window(3)
+            .subscribe(new Observer<Observable<Integer>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull Observable<Integer> integerObservable) {
+                    integerObservable.subscribe(new Observer<Integer>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull Integer integer) {
+                            LogU.d("window  " + integerObservable.hashCode() + " integer " + integer);
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+
+    }
+
+    @Override
+    public void threadChange() {
+        // 步骤1：创建被观察者 Observable & 发送事件
+        // 在主线程创建被观察者 Observable 对象
+        // 所以生产事件的线程是：主线程
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                LogU.d(" 被观察者 Observable的工作线程是: " + Thread.currentThread().getName());
+                // 打印验证
+                emitter.onNext(1);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.io())
+            .doOnNext(new Consumer<Integer>() {
+                @Override
+                public void accept(Integer integer) throws Exception {
+                    LogU.d(" 观察者第一次 Observable的工作线程是: " + Thread.currentThread().getName());
+                }
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Integer>() {
+
+                @Override
+                public void onSubscribe(Disposable d) {
+                    LogU.d("开始采用subscribe连接");
+                    // 打印验证
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("对Next事件" + value + "作出响应");
+                    LogU.d(" 最后的观察者 Observer的工作线程是: " + Thread.currentThread().getName());
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.d("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应 执行的线程" + Thread.currentThread().getName());
+                }
+            });
+
+
     }
 
     @Override

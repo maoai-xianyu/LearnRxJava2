@@ -43,5 +43,9 @@ public interface RxjavaLearnDetailPresenter {
 
     void repeatWhen();
 
+    void groupBy();
+
+    void threadChange();
+
     void clear();
 }
