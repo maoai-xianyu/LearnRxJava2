@@ -41,5 +41,7 @@ public interface RxjavaLearnDetailPresenter {
 
     void retryWhen();
 
+    void repeatWhen();
+
     void clear();
 }
