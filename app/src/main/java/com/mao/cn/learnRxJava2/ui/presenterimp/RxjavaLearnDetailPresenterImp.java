@@ -1203,7 +1203,23 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
     @Override
     public void throttle() {
-        RxJavaLearnDPFunction.getInstance().throttleFirstOrst();
+        // RxJavaLearnDPFunction.getInstance().throttleFirstOrst();
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+            .all(new Predicate<Integer>() {
+                @Override
+                public boolean test(Integer integer) throws Exception {
+                    return (integer <= 3);
+                    // 该函数用于判断Observable发送的10个数据是否都满足integer<=10
+                }
+            }).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                LogU.d("result is " + aBoolean);
+                // 输出返回结果
+            }
+
+        });
 
     }
 
