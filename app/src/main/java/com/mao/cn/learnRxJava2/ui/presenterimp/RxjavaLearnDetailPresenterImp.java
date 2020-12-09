@@ -21,8 +21,7 @@ import com.mao.cn.learnRxJava2.ui.presenter.RxjavaLearnDetailPresenter;
 import com.mao.cn.learnRxJava2.utils.network.NetworkUtils;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Notification;
@@ -41,7 +40,6 @@ import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -124,6 +122,16 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
     }
 
+
+    // 设置变量
+    // 可重试次数
+    private int maxConnectCount = 10;
+    // 当前已重试次数
+    private int currentRetryCount = 0;
+    // 重试等待时间
+    private int waitRetryTime = 0;
+
+
     @Override
     public void runIntraval(String name) {
         if (!NetworkUtils.isConnected(context)) {
@@ -143,7 +151,7 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
         // c. 采用Observable<...>形式 对 网络请求 进行封装
         Observable<Translation> observable = request.getCall();
 
-        observable.repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
+        /*observable.repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
             @Override
             public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
 
@@ -173,7 +181,90 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
             public void onComplete() {
 
             }
-        });
+        });*/
+
+        // 网络错误胡重试
+        observable.retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(@NonNull Observable<Throwable> throwableObservable) throws Exception {
+                // 参数Observable<Throwable>中的泛型 = 上游操作符抛出的异常，可通过该条件来判断异常的类型
+                return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(@NonNull Throwable throwable) throws Exception {
+
+                        // 输出异常信息
+                        LogU.d("发生异常 = " + throwable.toString());
+
+                        //即，当发生的异常 = 网络异常 = IO异常 才选择重试
+                        if (throwable instanceof IOException) {
+
+                            LogU.d("属于IO异常，需重试");
+
+                            // 需求2：限制重试次数  即，当已重试次数 < 设置的重试次数，才选择重试
+                            if (currentRetryCount < maxConnectCount) {
+
+                                // 记录重试次数
+                                currentRetryCount++;
+                                LogU.d("重试次数 = " + currentRetryCount);
+
+                                /**
+                                 * 需求2：实现重试
+                                 * 通过返回的Observable发送的事件 = Next事件，从而使得retryWhen（）重订阅，最终实现重试功能
+                                 *
+                                 * 需求3：延迟1段时间再重试
+                                 * 采用delay操作符 = 延迟一段时间发送，以实现重试间隔设置
+                                 *
+                                 * 需求4：遇到的异常越多，时间越长
+                                 * 在delay操作符的等待时间内设置 = 每重试1次，增多延迟重试时间1s
+                                 */
+                                // 设置等待时间
+                                waitRetryTime = 1000 + currentRetryCount * 1000;
+                                LogU.d("等待时间 =" + waitRetryTime);
+                                return Observable.just(1).delay(waitRetryTime, TimeUnit.MILLISECONDS);
+
+
+                            } else {
+                                // 若重试次数已 > 设置重试次数，则不重试
+                                // 通过发送error来停止重试（可在观察者的onError（）中获取信息）
+                                return Observable.error(new Throwable("重试次数已超过设置次数 = " + currentRetryCount + "，即 不再重试"));
+
+                            }
+                        }
+
+                        // 若发生的异常不属于I/O异常，则不重试
+                        // 通过返回的Observable发送的事件 = Error事件 实现（可在观察者的onError（）中获取信息）
+                        else {
+                            return Observable.error(new Throwable("发生了非网络异常（非I/O异常）"));
+                        }
+                    }
+                });
+            }
+        }).subscribeOn(Schedulers.io())               // 切换到IO线程进行网络请求
+            .observeOn(AndroidSchedulers.mainThread())  // 切换回到主线程 处理请求结果
+            .subscribe(new Observer<Translation>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                }
+
+                @Override
+                public void onNext(Translation result) {
+                    // 接收服务器返回的数据
+                    LogU.d("发送成功");
+                    result.show();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    // 获取停止重试的信息
+                    LogU.d(e.toString());
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+
 
         /*HttpApi httpApiHuihub = getHttpApiHuihub();
 
@@ -1086,227 +1177,33 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
 
     @Override
     public void repeatWhen() {
-        Observable.just(1, 2, 4).repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
-            @Override
-            // 在Function函数中，必须对输入的 Observable<Object>进行处理，这里我们使用的是flatMap操作符接收上游的数据
-            public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                // 将原始 Observable 停止发送事件的标识（Complete（） /  Error（））转换成1个 Object 类型数据传递给1个新被观察者（Observable）
-                // 以此决定是否重新订阅 & 发送原来的 Observable
-                // 此处有2种情况：
-                // 1. 若新被观察者（Observable）返回1个Complete（） /  Error（）事件，则不重新订阅 & 发送原来的 Observable
-                // 2. 若新被观察者（Observable）返回其余事件，则重新订阅 & 发送原来的 Observable
-                return objectObservable.flatMap(new Function<Object, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(@NonNull Object throwable) throws Exception {
-
-                        // 情况1：若新被观察者（Observable）返回1个Complete（） /  Error（）事件，则不重新订阅 & 发送原来的 Observable
-                        return Observable.empty();
-                        // Observable.empty() = 发送Complete事件，但不会回调观察者的onComplete（）
-
-                        //return Observable.error(new Throwable("不再重新订阅事件"));
-                        // 返回Error事件 = 回调onError（）事件，并接收传过去的错误信息。
-
-                        // 情况2：若新被观察者（Observable）返回其余事件，则重新订阅 & 发送原来的 Observable
-                        // return Observable.just(1);
-                        // 仅仅是作为1个触发重新订阅被观察者的通知，发送的是什么数据并不重要，只要不是Complete（） /  Error（）事件
-                    }
-                });
-
-            }
-        })
-            .subscribe(new Observer<Integer>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    LogU.d("开始采用subscribe连接");
-                }
-
-                @Override
-                public void onNext(Integer value) {
-                    LogU.d("接收到了事件" + value);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    LogU.e("对Error事件作出响应：" + e.toString());
-                }
-
-                @Override
-                public void onComplete() {
-                    LogU.d("对Complete事件作出响应");
-                }
-
-            });
+        RxJavaLearnDPFunction.getInstance().repeatWhen();
     }
 
     @Override
     public void groupBy() {
-        Observable<GroupedObservable<Integer, Integer>> observable = Observable.concat(
-            Observable.range(1, 4), Observable.range(1, 6)).groupBy(integer -> integer);
-        Observable.concat(observable).subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
+        RxJavaLearnDPFunction.getInstance().groupBy();
+    }
 
-            }
+    @Override
+    public void threadChange() {
+        RxJavaLearnDPFunction.getInstance().threadChange();
 
-            @Override
-            public void onNext(@NonNull Integer integer) {
-                LogU.d("integer" + integer);
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
-        //Observable.range(2, 5).scan((i1, i2) -> i1 * i2).subscribe(i -> LogU.d((i + " ")));
-        Observable.range(2, 5).scan(3, (integer, integer2) -> {
-            LogU.d("integer " + integer);
-            LogU.d("integer2 " + integer2);
-            return integer * integer2;
-        }).subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@NonNull Integer integer) {
-                LogU.d(integer + " ");
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
-        Observable.range(1, 10).buffer(3)
-            .subscribe(new Observer<List<Integer>>() {
+        Observable.just(1, 2, 3, 4, 5)
+            .skip(1) // 跳过正序的前1项
+            .skipLast(2) // 跳过正序的后2项
+            .subscribe(new Consumer<Integer>() {
                 @Override
-                public void onSubscribe(@NonNull Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(@NonNull List<Integer> integers) {
-                    LogU.d("buffer" + Arrays.toString(integers.toArray()));
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
-
-        Observable.range(1, 10).window(3)
-            .subscribe(new Observer<Observable<Integer>>() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(@NonNull Observable<Integer> integerObservable) {
-                    integerObservable.subscribe(new Observer<Integer>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(@NonNull Integer integer) {
-                            LogU.d("window  " + integerObservable.hashCode() + " integer " + integer);
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
+                public void accept(Integer integer) throws Exception {
+                    LogU.d("获取到的整型事件元素是： " + integer);
                 }
             });
 
     }
 
     @Override
-    public void threadChange() {
-        // 步骤1：创建被观察者 Observable & 发送事件
-        // 在主线程创建被观察者 Observable 对象
-        // 所以生产事件的线程是：主线程
-        Observable.create(new ObservableOnSubscribe<Integer>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
-                LogU.d(" 被观察者 Observable的工作线程是: " + Thread.currentThread().getName());
-                // 打印验证
-                emitter.onNext(1);
-                emitter.onComplete();
-            }
-        }).subscribeOn(Schedulers.newThread())
-            .observeOn(Schedulers.io())
-            .doOnNext(new Consumer<Integer>() {
-                @Override
-                public void accept(Integer integer) throws Exception {
-                    LogU.d(" 观察者第一次 Observable的工作线程是: " + Thread.currentThread().getName());
-                }
-            })
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<Integer>() {
-
-                @Override
-                public void onSubscribe(Disposable d) {
-                    LogU.d("开始采用subscribe连接");
-                    // 打印验证
-                }
-
-                @Override
-                public void onNext(Integer value) {
-                    LogU.d("对Next事件" + value + "作出响应");
-                    LogU.d(" 最后的观察者 Observer的工作线程是: " + Thread.currentThread().getName());
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    LogU.d("对Error事件作出响应");
-                }
-
-                @Override
-                public void onComplete() {
-                    LogU.d("对Complete事件作出响应 执行的线程" + Thread.currentThread().getName());
-                }
-            });
-
+    public void throttle() {
+        RxJavaLearnDPFunction.getInstance().throttleFirstOrst();
 
     }
 
