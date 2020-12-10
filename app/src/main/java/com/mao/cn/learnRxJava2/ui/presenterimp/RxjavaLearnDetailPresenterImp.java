@@ -1224,6 +1224,48 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
     }
 
     @Override
+    public void takeUtil() {
+        Observable.interval(1, TimeUnit.SECONDS)
+            .takeUntil(Observable.timer(10, TimeUnit.SECONDS))
+            .subscribe(new Observer<Long>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    LogU.d("onSubscribe");
+
+                }
+
+                @Override
+                public void onNext(@NonNull Long aLong) {
+                    LogU.d("接受到了时间  " + aLong);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    LogU.d("错误  " + e.toString());
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("onComplete  ");
+                }
+            });
+
+        Observable.just(1, 2, 3, 4, 5, 6)
+            .isEmpty() // 判断发送的数据中是否为空
+            .subscribe(new Consumer<Boolean>() {
+                @Override
+                public void accept(Boolean aBoolean) throws Exception {
+                    LogU.d("result " + aBoolean);
+                }
+            }, new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+                    LogU.d("throwable " + throwable);
+                }
+            });
+    }
+
+    @Override
     public void clear() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             LogU.i("  compositeDisposable clear");

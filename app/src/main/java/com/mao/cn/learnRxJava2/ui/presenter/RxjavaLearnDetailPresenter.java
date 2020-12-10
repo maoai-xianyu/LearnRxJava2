@@ -49,5 +49,7 @@ public interface RxjavaLearnDetailPresenter {
 
     void throttle();
 
+    void takeUtil();
+
     void clear();
 }
