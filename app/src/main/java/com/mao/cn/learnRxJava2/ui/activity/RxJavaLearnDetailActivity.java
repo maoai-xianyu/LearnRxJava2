@@ -88,7 +88,8 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
         //presenter.groupBy();
         //presenter.threadChange();
         //presenter.throttle();
-        presenter.takeUtil();
+        //presenter.takeUtil();
+        presenter.defaultIfEmpty();
 
     }
 

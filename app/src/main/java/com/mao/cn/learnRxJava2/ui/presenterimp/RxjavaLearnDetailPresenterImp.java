@@ -1263,6 +1263,45 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                     LogU.d("throwable " + throwable);
                 }
             });
+
+    }
+
+    @Override
+    public void defaultIfEmpty() {
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                // 不发送任何有效事件
+                e.onNext(1);
+                e.onNext(2);
+
+                // 仅发送Complete事件
+                e.onComplete();
+            }
+        }).defaultIfEmpty(10) // 若仅发送了Complete事件，默认发送 值 = 10
+            .subscribe(new Observer<Integer>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    LogU.d("开始采用subscribe连接");
+                }
+
+                @Override
+                public void onNext(Integer value) {
+                    LogU.d("接收到了事件" + value);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogU.d("对Error事件作出响应");
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("对Complete事件作出响应");
+                }
+            });
+
     }
 
     @Override

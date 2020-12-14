@@ -51,5 +51,7 @@ public interface RxjavaLearnDetailPresenter {
 
     void takeUtil();
 
+    void defaultIfEmpty();
+
     void clear();
 }
