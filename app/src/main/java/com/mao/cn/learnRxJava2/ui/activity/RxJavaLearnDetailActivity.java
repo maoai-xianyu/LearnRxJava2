@@ -29,6 +29,9 @@ import com.mao.cn.learnRxJava2.ui.features.IRxjavaLearnDetail;
 import com.mao.cn.learnRxJava2.ui.presenter.RxjavaLearnDetailPresenter;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -39,7 +42,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.ReplaySubject;
 
 /**
  * DESC   :
@@ -89,7 +95,13 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
         //presenter.threadChange();
         //presenter.throttle();
         //presenter.takeUtil();
-        presenter.defaultIfEmpty();
+        //presenter.defaultIfEmpty();
+        //presenter.backFlowable();
+        //presenter.replaySubject();
+        //presenter.behaviorSubject();
+        //presenter.publishSubject();
+        //presenter.asyncSubject();
+        presenter.syncRequestNet();
 
     }
 
@@ -122,6 +134,78 @@ public class RxJavaLearnDetailActivity extends BaseActivity implements IRxjavaLe
 
                 }
             });
+    }
+
+
+    private void testSubject() {
+        PublishSubject<Integer> subject = PublishSubject.create();
+
+        subject.subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                LogU.d(integer + "");
+            }
+        });
+
+        Executor executor = Executors.newFixedThreadPool(5);
+        Disposable disposable = Observable.range(1, 5).subscribe(i ->
+            executor.execute(() -> {
+                try {
+                    Thread.sleep(i * 200);
+                    subject.onNext(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }));
+    }
+
+
+    private void testDouble() throws InterruptedException {
+        testSubjectM();
+
+        testReplaySubject();
+    }
+
+    private void testSubjectM() throws InterruptedException {
+
+        PublishSubject<Integer> subject = PublishSubject.create();
+        subject.subscribe(i -> System.out.print("(1: " + i + ") "));
+
+        Executor executor = Executors.newFixedThreadPool(5);
+        Disposable disposable = Observable.range(1, 5).subscribe(i -> executor.execute(() -> {
+            try {
+                Thread.sleep(i * 200);
+                subject.onNext(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        Thread.sleep(500);
+        subject.subscribe(i -> System.out.print("(2: " + i + ") "));
+
+        Observable.timer(2, TimeUnit.SECONDS).subscribe(i -> ((ExecutorService) executor).shutdown());
+    }
+
+    private static void testReplaySubject() throws InterruptedException {
+        ReplaySubject<Integer> subject = ReplaySubject.create();
+        subject.subscribe(i -> System.out.print("(1: " + i + ") "));
+
+        Executor executor = Executors.newFixedThreadPool(5);
+        Disposable disposable = Observable.range(1, 5).subscribe(i -> executor.execute(() -> {
+            try {
+                Thread.sleep(i * 200);
+                subject.onNext(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        Thread.sleep(500);
+        subject.subscribe(i -> System.out.print("(2: " + i + ") "));
+
+        Observable.timer(2, TimeUnit.SECONDS).subscribe(i -> ((ExecutorService) executor).shutdown());
+
     }
 
     @SuppressLint("CheckResult")

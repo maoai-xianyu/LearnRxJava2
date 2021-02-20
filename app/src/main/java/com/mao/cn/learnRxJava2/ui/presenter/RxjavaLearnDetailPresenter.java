@@ -53,5 +53,20 @@ public interface RxjavaLearnDetailPresenter {
 
     void defaultIfEmpty();
 
+    void backFlowable();
+
+    void compose();
+
+    void replaySubject();
+
+    void behaviorSubject();
+
+    void publishSubject();
+
+    void asyncSubject();
+
+
+    void syncRequestNet();
+
     void clear();
 }

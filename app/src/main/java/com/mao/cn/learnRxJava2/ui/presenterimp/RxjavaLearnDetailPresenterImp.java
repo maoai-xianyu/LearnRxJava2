@@ -21,9 +21,16 @@ import com.mao.cn.learnRxJava2.ui.presenter.RxjavaLearnDetailPresenter;
 import com.mao.cn.learnRxJava2.utils.network.NetworkUtils;
 import com.mao.cn.learnRxJava2.utils.tools.LogU;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Notification;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -41,6 +48,10 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.AsyncSubject;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.ReplaySubject;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import retrofit2.Retrofit;
@@ -1301,6 +1312,493 @@ public class RxjavaLearnDetailPresenterImp extends BasePresenterImp implements R
                     LogU.d("对Complete事件作出响应");
                 }
             });
+
+    }
+
+    @Override
+    public void backFlowable() {
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> emitter) throws Exception {
+
+                // 调用emitter.requested()获取当前观察者需要接收的事件数量
+                long n = emitter.requested();
+
+                LogU.d("观察者可接收事件" + n);
+
+                // 根据emitter.requested()的值，即当前观察者需要接收的事件数量来发送事件
+                for (int i = 0; i < n; i++) {
+                    LogU.d("发送了事件" + i);
+                    emitter.onNext(i);
+                }
+            }
+        }, BackpressureStrategy.ERROR)
+            .subscribe(new Subscriber<Integer>() {
+                @Override
+                public void onSubscribe(Subscription s) {
+                    LogU.d("onSubscribe");
+
+                    // 设置观察者每次能接受10个事件
+                    s.request(10);
+
+                }
+
+                @Override
+                public void onNext(Integer integer) {
+                    LogU.d("接收到了事件" + integer);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    LogU.d("onError: " + t);
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("onComplete");
+                }
+            });
+    }
+
+
+    // ReplaySubject: 无论什么时候注册 Observer 都可以接收到任何时候通过该 Observable 发射的事件。
+    @Override
+    public void replaySubject() {
+
+        // 很显然，无论是在接收到数据前还是数据后订阅，ReplaySubject都会发射所有数据给订阅者。
+        ReplaySubject<String> subject = ReplaySubject.create();
+
+        subject.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String o) {
+                LogU.d("replaySubject 发送数据前  订阅  " + o);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        subject.onNext("one");
+        subject.onNext("two");
+        subject.onNext("three");
+        subject.onComplete();
+
+        subject.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.d("replaySubject 发射数据后  订阅  " + s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        LogU.d("ReplaySubject: 无论什么时候注册 Observer 都可以接收到任何时候通过该 Observable 发射的事件。");
+
+    }
+
+    @Override
+    public void behaviorSubject() {
+        // observer will receive all 4 events (including "default").
+        BehaviorSubject<String> subject = BehaviorSubject.createDefault("default");
+        subject.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+
+                LogU.d("behaviorSubject  接受到 observer will receive all 4 events (including \"default\")." + s);
+
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("behaviorSubject  接受到 observer will receive all 4 events (including \"default\").");
+            }
+        });
+        subject.onNext("one");
+        subject.onNext("two");
+        subject.onNext("three");
+
+        Observable<String> share = subject.share();
+
+        share.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.e("subject.share()   "+s);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.e("subject.share()   onComplete ");
+
+            }
+        });
+
+        subject.onComplete();
+
+
+
+
+
+        LogU.e("--------------");
+
+        // observer will receive the "one", "two" and "three" events, but not "zero"
+        BehaviorSubject<String> subject1 = BehaviorSubject.create();
+        subject1.onNext("zero");
+        subject1.onNext("one");
+        subject1.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.d("behaviorSubject  订阅在发送了 zero one 之后 接受到 " + s);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("behaviorSubject  订阅在发送了 zero one 之后 接受到 one，two，three");
+            }
+        });
+        subject1.onNext("two");
+        subject1.onNext("three");
+        subject1.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+
+                LogU.d("behaviorSubject  订阅在发送了 three 之后 接受到 " + s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("behaviorSubject  订阅在发送了 three 之后 接受到 three");
+
+            }
+        });
+        subject1.onComplete();
+
+        LogU.e("--------------");
+
+        // observer will receive only onComplete
+        BehaviorSubject<String> subject2 = BehaviorSubject.create();
+        subject2.onNext("zero");
+        subject2.onNext("one");
+        subject2.onComplete();
+        subject2.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.d("behaviorSubject  接受到 "+s);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.d("behaviorSubject  订阅在发送 onComplete 接受到 complete");
+
+            }
+        });
+
+        LogU.e("--------------");
+
+        // observer will receive only onError
+        BehaviorSubject<String> subject3 = BehaviorSubject.create();
+        subject3.onNext("zero");
+        subject3.onNext("one");
+        subject3.onError(new RuntimeException("error"));
+        subject3.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.d("behaviorSubject  接受到 "+s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                LogU.d("behaviorSubject 订阅的发送error后 只接受到 error");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        LogU.e("behaviorSubject 简单来说，就是释放订阅前最后一个数据和订阅后接收到的所有数据:");
+
+    }
+
+
+    @Override
+    public void publishSubject() {
+
+        PublishSubject<String> subject = PublishSubject.create();
+        // observer1 will receive all onNext and onComplete events
+        subject.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+
+                LogU.e("publishSubject 最先订阅  接受数据 "+s);
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+                LogU.e("PublishSubject  最先订阅之后，获取所有的数据 ");
+
+            }
+        });
+        subject.onNext("one");
+        subject.onNext("two");
+
+        // observer2 will only receive "three" and onComplete
+        subject.subscribe(new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+                LogU.e("publishSubject  在发送 two 之后订阅 接受数据 "+s);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                LogU.e("PublishSubject  在发送 two 之后订阅 获取所有的数据 ");
+            }
+        });
+        subject.onNext("three");
+        subject.onComplete();
+
+        LogU.e("PublishSubject仅会向Observer释放在订阅之后Observable释放的数据。");
+    }
+
+
+    @Override
+    public void asyncSubject() {
+
+
+        AsyncSubject<String> subject = AsyncSubject.create();
+        subject.onNext("asyncSubject1");
+        subject.onNext("asyncSubject2");
+        subject.onComplete();
+        subject.subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+               LogU.d("asyncSubject:"+s);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                LogU.d("asyncSubject onError");  //不输出（异常才会输出）
+            }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+                LogU.d("asyncSubject:complete");  //输出 asyncSubject onComplete
+            }
+        });
+
+        subject.onNext("asyncSubject3");
+        subject.onNext("asyncSubject4");
+
+
+        LogU.e("AsyncSubject Observer会接收AsyncSubject的onComplete()之前的最后一个数据。");
+    }
+
+
+
+    private PublishSubject<String> netS1 = PublishSubject.create();
+    private PublishSubject<String> netS2 = PublishSubject.create();
+
+    @Override
+    public void syncRequestNet() {
+
+        Observable.timer(2,TimeUnit.SECONDS)
+            .map(new Function<Long, String>() {
+                @Override
+                public String apply(@NonNull Long aLong) throws Exception {
+                    return "test1";
+                }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<String>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull String s) {
+                    LogU.d("第一个接口数据回来 "+s);
+                    netS1.onNext(s);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("第一个接口数据回来 完成");
+
+                }
+            });
+
+
+        Observable.just("test2").subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<String>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull String s) {
+                    LogU.d("第二个接口数据回来 "+s);
+                    netS2.onNext(s);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.d("第二个接口数据回来 完成");
+
+                }
+            });
+
+        Observable.zip(netS1.share(), netS2.share(), (s, s2) -> {
+            LogU.e(" s "+s +" s2 "+s2);
+            return s+s2;
+        }).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<String>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(@NonNull String s) {
+                    LogU.e("  合并后的数据  "+s);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+                    LogU.e("  合并后的数据  onComplete");
+
+                }
+            });
+    }
+
+    @Override
+    public void compose() {
 
     }
 
